@@ -404,16 +404,27 @@ function setSts(txt, cls) {
 // Scanner ini hosted di GitHub Pages, bukan di GAS
 // Jadi kita panggil GAS sebagai API via URL parameter
 function callGAS(fn, params, onSuccess, onError) {
-  // Encode params sebagai JSON di URL
   var url = GAS_URL
     + '?call=' + encodeURIComponent(fn)
     + '&params=' + encodeURIComponent(JSON.stringify(params));
 
-  fetch(url)
-    .then(function(r) { return r.json(); })
-    .then(onSuccess)
-    .catch(onError);
+  // Pakai no-cors tidak bisa baca response
+  // Solusi: pakai JSONP via script tag injection
+  var cbName = 'cb_' + Date.now();
+  var script = document.createElement('script');
+
+  window[cbName] = function(data) {
+    delete window[cbName];
+    document.body.removeChild(script);
+    onSuccess(data);
+  };
+
+  script.onerror = function() {
+    delete window[cbName];
+    document.body.removeChild(script);
+    onError('Gagal konek ke server.');
+  };
+
+  script.src = url + '&callback=' + cbName;
+  document.body.appendChild(script);
 }
-</script>
-</body>
-</html>
