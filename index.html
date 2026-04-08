@@ -4,64 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Scanner QR — REAKSI 2</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:sans-serif;background:#0f1c35;
-     min-height:100vh;padding:20px;color:#fff}
+body{font-family:sans-serif;background:#0f1c35;min-height:100vh;padding:20px;color:#fff}
 .hdr{text-align:center;margin-bottom:20px;padding-top:4px}
 .hdr h1{font-size:20px;font-weight:700;color:#c9a84c}
 .hdr p{font-size:12px;color:#8899bb;margin-top:3px}
-.card{max-width:340px;margin:20px auto;
-      background:#1a2744;border-radius:14px;padding:28px}
+.card{max-width:340px;margin:20px auto;background:#1a2744;border-radius:14px;padding:28px}
 .card h2{color:#c9a84c;margin-bottom:6px;font-size:17px}
 .card p{color:#8899bb;font-size:13px;margin-bottom:18px}
-input[type=password],input[type=text]{
-  width:100%;padding:10px 13px;border:1px solid #2d4070;
-  border-radius:8px;font-size:15px;background:#0f1c35;
-  color:#fff;margin-bottom:10px}
-input::placeholder{color:#445}
-.btn-p{width:100%;padding:12px;background:#c9a84c;color:#1a2744;
-       border:none;border-radius:8px;font-size:15px;
-       font-weight:700;cursor:pointer}
-.btn-p:disabled{background:#555;color:#999;cursor:not-allowed}
-.err{color:#f87171;font-size:13px;margin-bottom:10px;display:none;
-     background:rgba(255,0,0,.1);padding:8px 12px;border-radius:6px}
+input{width:100%;padding:10px;border-radius:8px;border:1px solid #2d4070;background:#0f1c35;color:#fff}
+.btn-p{width:100%;padding:12px;background:#c9a84c;color:#1a2744;border:none;border-radius:8px;font-weight:700}
+.err{color:#f87171;font-size:13px;margin-top:8px}
 #wrap-scan{max-width:400px;margin:0 auto}
-.cam-wrap{position:relative;width:100%;
-          border-radius:12px;overflow:hidden;
-          background:#000;margin-bottom:12px}
-#cam-video{width:100%;display:block}
-.cam-overlay{position:absolute;inset:0;display:flex;
-             align-items:center;justify-content:center;pointer-events:none}
-.cam-frame{width:220px;height:220px;border:3px solid #c9a84c;
-           border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.45)}
-.scan-line{position:absolute;width:200px;height:2px;
-           background:rgba(201,168,76,.9);
-           animation:scanMove 2s ease-in-out infinite}
-@keyframes scanMove{
-  0%  {top:calc(50% - 108px)}
-  50% {top:calc(50% + 108px)}
-  100%{top:calc(50% - 108px)}
-}
-.cam-toggle{display:flex;gap:8px;margin-bottom:10px}
-.btn-cam{flex:1;padding:9px;border-radius:8px;border:1px solid #2d4070;
-         background:#1a2744;color:#c9a84c;font-size:13px;
-         font-weight:600;cursor:pointer}
-.btn-cam.on{background:#c9a84c;color:#1a2744;border-color:#c9a84c}
-.btn-cam:disabled{background:#1a2744;color:#445;
-                  border-color:#2d4070;cursor:not-allowed}
-.sts{text-align:center;font-size:12px;color:#8899bb;
-     margin-bottom:10px;min-height:16px;line-height:1.5;padding:0 4px}
-.sts.ok{color:#4ade80}
-.sts.er{color:#f87171}
-.manual-row{display:flex;gap:8px;margin-bottom:14px}
-.manual-row input{flex:1;margin-bottom:0}
-.btn-cek{padding:10px 18px;background:#c9a84c;color:#1a2744;
-         border:none;border-radius:8px;font-size:14px;
-         font-weight:700;cursor:pointer}
-.loading{text-align:center;color:#8899bb;padding:24px;font-size:14px}
+.cam-wrap{position:relative;border-radius:12px;overflow:hidden;background:#000;margin-bottom:12px}
+#cam-video{width:100%}
+.sts{text-align:center;font-size:12px;color:#8899bb;margin-bottom:10px}
+.btn-cek{padding:10px;background:#c9a84c;color:#1a2744;border:none;border-radius:8px;font-weight:700;width:100%}
+.loading{text-align:center;padding:20px}
+.hidden{display:none}
 </style>
 </head>
+
 <body>
 
 <div class="hdr">
@@ -69,133 +34,205 @@ input::placeholder{color:#445}
   <p>Verifikasi kehadiran peserta hari H</p>
 </div>
 
-<div id="wrap-scan">
-  <div class="cam-toggle">
-    <button class="btn-cam" onclick="aktifkan()">📷 Aktifkan Kamera</button>
+<!-- SETUP -->
+<div id="wrap-setup">
+  <div class="card">
+    <h2>Setup</h2>
+    <input type="text" id="gas-url" placeholder="URL GAS">
+    <button class="btn-p" onclick="simpanSetup()">Lanjut</button>
+    <div id="err-setup" class="err"></div>
   </div>
+</div>
+
+<!-- LOGIN -->
+<div id="wrap-login" class="hidden">
+  <div class="card">
+    <h2>Login</h2>
+    <input type="password" id="pass-in" placeholder="Password">
+    <button class="btn-p" onclick="doLogin()">Masuk</button>
+    <div id="err-login" class="err"></div>
+  </div>
+</div>
+
+<!-- SCANNER -->
+<div id="wrap-scan" class="hidden">
+
+  <button class="btn-cek" onclick="aktifkan()">📷 Aktifkan Kamera</button>
 
   <div class="cam-wrap">
     <video id="cam-video" autoplay playsinline muted></video>
     <canvas id="cam-canvas" style="display:none"></canvas>
   </div>
 
-  <div class="sts" id="sts">Tekan Aktifkan Kamera</div>
+  <div id="sts" class="sts">Siap</div>
 
-  <div class="manual-row">
-    <input type="text" id="manual-id" placeholder="ID manual">
-    <button class="btn-cek" onclick="cekManual()">Cek</button>
-  </div>
+  <input type="text" id="manual-id" placeholder="Manual ID">
+  <button class="btn-cek" onclick="cekManual()">Cek Manual</button>
 
-  <!-- 🔥 TOMBOL SHUTTER -->
-  <div style="margin-bottom:12px">
-    <button class="btn-cek" style="width:100%" onclick="scanSekarang()">
-      📸 Scan Sekarang
-    </button>
-  </div>
+  <!-- 🔥 SHUTTER -->
+  <button class="btn-cek" style="margin-top:10px" onclick="scanSekarang()">
+    📸 Scan Sekarang
+  </button>
 
   <div id="hasil"></div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
 
 <script>
-var stream = null;
-var bisaScan = true;
+var GAS_URL='', PASS='', stream=null, loopId=null;
+var bisaScan=true, sedangProses=false, lastScan=0, jsonpN=0;
 
-// AKTIFKAN KAMERA
-function aktifkan() {
-  navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "environment" }
-  }).then(function(s) {
-    stream = s;
-    var v = document.getElementById('cam-video');
-    v.srcObject = stream;
+// INIT
+(function(){
+  var saved=localStorage.getItem('reaksi2_url');
+  if(saved){GAS_URL=saved; tampilStep('login')}
+  else tampilStep('setup');
+})();
+
+function tampilStep(s){
+  ['setup','login','scan'].forEach(x=>{
+    document.getElementById('wrap-'+x).classList.add('hidden')
+  });
+  document.getElementById('wrap-'+s).classList.remove('hidden');
+}
+
+// SETUP
+function simpanSetup(){
+  var url=document.getElementById('gas-url').value;
+  if(!url) return;
+  GAS_URL=url;
+  localStorage.setItem('reaksi2_url',url);
+  tampilStep('login');
+}
+
+// LOGIN
+function doLogin(){
+  var p=document.getElementById('pass-in').value;
+  PASS=p;
+  tampilStep('scan');
+}
+
+// KAMERA
+function aktifkan(){
+  navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}})
+  .then(s=>{
+    stream=s;
+    var v=document.getElementById('cam-video');
+    v.srcObject=s;
     v.play();
     mulaiLoop();
   });
 }
 
-// AUTO SCAN (tetap ada)
-function mulaiLoop() {
-  var video  = document.getElementById('cam-video');
-  var canvas = document.getElementById('cam-canvas');
-  var ctx    = canvas.getContext('2d');
+// LOOP SCAN
+function mulaiLoop(){
+  var v=document.getElementById('cam-video');
+  var c=document.getElementById('cam-canvas');
+  var ctx=c.getContext('2d',{willReadFrequently:true});
 
-  setInterval(function() {
-    if (!bisaScan || !stream) return;
+  loopId=setInterval(()=>{
+    if(!bisaScan||sedangProses||!stream) return;
+    if(v.readyState!==v.HAVE_ENOUGH_DATA) return;
 
-    var w = video.videoWidth;
-    var h = video.videoHeight;
-    if (!w || !h) return;
+    var w=v.videoWidth,h=v.videoHeight;
+    if(!w) return;
 
-    canvas.width = w;
-    canvas.height = h;
+    var size=Math.min(w,h)*0.7;
+    var sx=(w-size)/2, sy=(h-size)/2;
 
-    ctx.drawImage(video, 0, 0);
+    c.width=size; c.height=size;
+    ctx.drawImage(v,sx,sy,size,size,0,0,size,size);
 
-    var img = ctx.getImageData(0, 0, w, h);
-    var code = jsQR(img.data, w, h);
+    var img=ctx.getImageData(0,0,size,size);
+    var code=jsQR(img.data,size,size,{inversionAttempts:"attemptBoth"});
 
-    if (code) {
-      bisaScan = false;
-      prosesId(code.data);
+    if(code&&code.data){
+      var now=Date.now();
+      if(now-lastScan<1500)return;
+      lastScan=now;
+
+      bisaScan=false;
+      sedangProses=true;
+
+      setSts("QR terbaca ✓","ok");
+
+      setTimeout(()=>prosesId(code.data.trim()),250);
     }
-  }, 300);
+  },200);
 }
 
-// 🔥 SHUTTER SCAN (INI KUNCI)
-function scanSekarang() {
-  var video  = document.getElementById('cam-video');
-  var canvas = document.getElementById('cam-canvas');
-  var ctx    = canvas.getContext('2d');
+// SHUTTER
+function scanSekarang(){
+  if(!stream||sedangProses)return;
 
-  var w = video.videoWidth;
-  var h = video.videoHeight;
+  var v=document.getElementById('cam-video');
+  var c=document.getElementById('cam-canvas');
+  var ctx=c.getContext('2d',{willReadFrequently:true});
 
-  if (!w || !h) {
-    setSts("Kamera belum siap", "er");
-    return;
-  }
+  var w=v.videoWidth,h=v.videoHeight;
+  var size=Math.min(w,h)*0.7;
 
-  var size = Math.min(w, h) * 0.7;
-  var sx = (w - size)/2;
-  var sy = (h - size)/2;
+  c.width=size; c.height=size;
+  ctx.drawImage(v,(w-size)/2,(h-size)/2,size,size,0,0,size,size);
 
-  canvas.width = size;
-  canvas.height = size;
+  var img=ctx.getImageData(0,0,size,size);
+  var code=jsQR(img.data,size,size,{inversionAttempts:"attemptBoth"});
 
-  ctx.drawImage(video, sx, sy, size, size, 0, 0, size, size);
-
-  var img = ctx.getImageData(0, 0, size, size);
-
-  var code = jsQR(img.data, size, size, {
-    inversionAttempts: "attemptBoth"
-  });
-
-  if (code) {
-    bisaScan = false;
+  if(code&&code.data){
+    bisaScan=false;
+    sedangProses=true;
     setSts("QR terbaca ✓","ok");
-    prosesId(code.data);
-  } else {
-    setSts("Gagal baca, dekatkan QR","er");
+    setTimeout(()=>prosesId(code.data.trim()),200);
+  }else{
+    setSts("Gagal baca QR","er");
   }
 }
 
-// SIMULASI
+// PROSES
 function prosesId(id){
-  document.getElementById("hasil").innerHTML =
-    '<div class="loading">Terbaca: '+id+'</div>';
+  document.getElementById('hasil').innerHTML=
+    '<div class="loading">Memeriksa '+id+'...</div>';
+
+  callGAS('serverScanQR',[PASS,id],
+    res=>{tampilHasil(res);reset();},
+    e=>{tampilHasil({ok:false,msg:e});reset();}
+  );
+}
+
+function reset(){
+  setTimeout(()=>{
+    bisaScan=true;
+    sedangProses=false;
+    setSts("Siap scan","");
+  },1500);
+}
+
+// UI
+function setSts(t,c){
+  var el=document.getElementById('sts');
+  el.textContent=t;
+  el.className='sts '+(c||'');
+}
+
+function tampilHasil(res){
+  document.getElementById('hasil').innerHTML=
+    '<div class="loading">'+(res.msg||'OK')+'</div>';
 }
 
 function cekManual(){
-  var id = document.getElementById("manual-id").value;
-  prosesId(id);
+  prosesId(document.getElementById('manual-id').value);
 }
 
-function setSts(txt,cls){
-  var el = document.getElementById("sts");
-  el.textContent = txt;
-  el.className = "sts "+(cls||"");
+// JSONP
+function callGAS(fn,params,onSuccess,onError){
+  var cb='cb'+Date.now();
+  window[cb]=data=>{onSuccess(data);delete window[cb]};
+  var s=document.createElement('script');
+  s.src=GAS_URL+'?call='+fn+'&params='+encodeURIComponent(JSON.stringify(params))+'&callback='+cb;
+  s.onerror=()=>onError('Gagal konek');
+  document.body.appendChild(s);
 }
 </script>
 
