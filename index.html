@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Scanner QR — REAKSI 2</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:sans-serif;background:#0f1c35;
@@ -12,26 +11,22 @@ body{font-family:sans-serif;background:#0f1c35;
 .hdr{text-align:center;margin-bottom:20px;padding-top:4px}
 .hdr h1{font-size:20px;font-weight:700;color:#c9a84c}
 .hdr p{font-size:12px;color:#8899bb;margin-top:3px}
-
-.login-card{max-width:340px;margin:20px auto;
-            background:#1a2744;border-radius:14px;padding:28px}
-.login-card h2{color:#c9a84c;margin-bottom:6px;font-size:17px}
-.login-card p{color:#8899bb;font-size:13px;margin-bottom:18px}
+.card{max-width:340px;margin:20px auto;
+      background:#1a2744;border-radius:14px;padding:28px}
+.card h2{color:#c9a84c;margin-bottom:6px;font-size:17px}
+.card p{color:#8899bb;font-size:13px;margin-bottom:18px}
 input[type=password],input[type=text]{
   width:100%;padding:10px 13px;border:1px solid #2d4070;
   border-radius:8px;font-size:15px;background:#0f1c35;
   color:#fff;margin-bottom:10px}
 input::placeholder{color:#445}
-.btn-primary{width:100%;padding:12px;background:#c9a84c;
-             color:#1a2744;border:none;border-radius:8px;
-             font-size:15px;font-weight:700;cursor:pointer}
-.btn-primary:disabled{background:#555;color:#999;cursor:not-allowed}
-.err-txt{color:#f87171;font-size:13px;margin-bottom:10px;
-         display:none;background:rgba(255,0,0,.1);
-         padding:8px 12px;border-radius:6px}
-
+.btn-p{width:100%;padding:12px;background:#c9a84c;color:#1a2744;
+       border:none;border-radius:8px;font-size:15px;
+       font-weight:700;cursor:pointer}
+.btn-p:disabled{background:#555;color:#999;cursor:not-allowed}
+.err{color:#f87171;font-size:13px;margin-bottom:10px;display:none;
+     background:rgba(255,0,0,.1);padding:8px 12px;border-radius:6px}
 #wrap-scan{max-width:400px;margin:0 auto}
-
 .cam-wrap{position:relative;width:100%;aspect-ratio:1;
           border-radius:12px;overflow:hidden;
           background:#000;margin-bottom:12px}
@@ -39,8 +34,7 @@ input::placeholder{color:#445}
 .cam-overlay{position:absolute;inset:0;display:flex;
              align-items:center;justify-content:center;pointer-events:none}
 .cam-frame{width:220px;height:220px;border:3px solid #c9a84c;
-           border-radius:12px;
-           box-shadow:0 0 0 9999px rgba(0,0,0,.5)}
+           border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.5)}
 .scan-line{position:absolute;width:200px;height:2px;
            background:rgba(201,168,76,.8);
            animation:scanMove 2s ease-in-out infinite}
@@ -50,33 +44,26 @@ input::placeholder{color:#445}
   100%{top:calc(50% - 100px)}
 }
 canvas{display:none}
-
 .cam-toggle{display:flex;gap:8px;margin-bottom:10px}
-.btn-cam{flex:1;padding:9px;border-radius:8px;
-         border:1px solid #2d4070;background:#1a2744;
-         color:#c9a84c;font-size:13px;font-weight:600;cursor:pointer}
+.btn-cam{flex:1;padding:9px;border-radius:8px;border:1px solid #2d4070;
+         background:#1a2744;color:#c9a84c;font-size:13px;
+         font-weight:600;cursor:pointer}
 .btn-cam.on{background:#c9a84c;color:#1a2744;border-color:#c9a84c}
 .btn-cam:disabled{background:#1a2744;color:#445;
                   border-color:#2d4070;cursor:not-allowed}
-
 .sts{text-align:center;font-size:12px;color:#8899bb;
-     margin-bottom:10px;min-height:16px}
+     margin-bottom:10px;min-height:16px;line-height:1.5}
 .sts.ok {color:#4ade80}
-.sts.err{color:#f87171}
-
+.sts.er {color:#f87171}
 .manual-row{display:flex;gap:8px;margin-bottom:14px}
 .manual-row input{flex:1;margin-bottom:0}
 .btn-cek{padding:10px 18px;background:#c9a84c;color:#1a2744;
          border:none;border-radius:8px;font-size:14px;
          font-weight:700;cursor:pointer}
 .btn-cek:disabled{background:#555;color:#999;cursor:not-allowed}
-
 .rcard{border-radius:14px;padding:20px;margin-top:4px;
        animation:fadeIn .25s ease}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(6px)}
-  to  {opacity:1;transform:none}
-}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
 .rcard.ok  {background:#071f0f;border:1.5px solid #166534}
 .rcard.warn{background:#1f1200;border:1.5px solid #7c3d12}
 .rcard.fail{background:#1f0707;border:1.5px solid #7f1d1d}
@@ -89,11 +76,9 @@ canvas{display:none}
 .r-info{background:rgba(255,255,255,.05);border-radius:8px;
         padding:12px;font-size:13px;line-height:2;color:#ccc}
 .r-info b{color:#fff}
-
 .merch-box{margin-top:12px;padding:14px;
            background:rgba(201,168,76,.08);
-           border:1px solid rgba(201,168,76,.2);
-           border-radius:10px}
+           border:1px solid rgba(201,168,76,.2);border-radius:10px}
 .m-title{font-size:11px;color:#8899bb;text-transform:uppercase;
          letter-spacing:1px;margin-bottom:8px}
 .m-paket{font-size:17px;font-weight:700;color:#c9a84c;margin-bottom:2px}
@@ -106,12 +91,11 @@ canvas{display:none}
 .m-dot.lunas{background:#4ade80}
 .m-dot.belum{background:#fb923c}
 .m-note{margin-top:8px;font-size:12px;color:#fb923c;line-height:1.5}
-
-.btn-next{width:100%;margin-top:14px;padding:12px;
-          background:#1a2744;color:#c9a84c;
-          border:1.5px solid #c9a84c;border-radius:9px;
+.btn-next{width:100%;margin-top:14px;padding:12px;background:#1a2744;
+          color:#c9a84c;border:1.5px solid #c9a84c;border-radius:9px;
           font-size:14px;font-weight:700;cursor:pointer}
 .hidden{display:none}
+.loading{text-align:center;color:#8899bb;padding:24px;font-size:14px}
 </style>
 </head>
 <body>
@@ -121,45 +105,40 @@ canvas{display:none}
   <p>Verifikasi kehadiran peserta hari H</p>
 </div>
 
-<!-- Step 1: Isi URL GAS -->
+<!-- Step 1: Setup URL -->
 <div id="wrap-setup">
-  <div class="login-card">
+  <div class="card">
     <h2>Setup Scanner</h2>
-    <p>Masukkan URL deployment GAS kamu (URL /exec).</p>
-    <input type="text" id="gas-url"
-           placeholder="https://script.google.com/macros/s/.../exec">
-    <div class="err-txt" id="err-setup"></div>
-    <button class="btn-primary" onclick="simpanSetup()">Lanjut</button>
+    <p>Masukkan URL GAS deployment kamu.<br>
+       Contoh: <small style="color:#445;word-break:break-all">
+       https://script.google.com/macros/s/ABC.../exec</small></p>
+    <input type="text" id="gas-url" placeholder="https://script.google.com/macros/s/.../exec">
+    <div class="err" id="err-setup"></div>
+    <button class="btn-p" onclick="simpanSetup()">Lanjut →</button>
   </div>
 </div>
 
-<!-- Step 2: Login password -->
+<!-- Step 2: Login -->
 <div id="wrap-login" class="hidden">
-  <div class="login-card">
+  <div class="card">
     <h2>Login Panitia</h2>
-    <p>Masukkan password scanner.</p>
-    <input type="password" id="pass-in"
-           placeholder="Password scanner"
+    <p>Masukkan password scanner untuk memulai.</p>
+    <input type="password" id="pass-in" placeholder="Password scanner"
            onkeydown="if(event.key==='Enter')doLogin()">
-    <div class="err-txt" id="err-login"></div>
-    <button class="btn-primary" id="btn-login" onclick="doLogin()">
-      Masuk
-    </button>
+    <div class="err" id="err-login"></div>
+    <button class="btn-p" id="btn-login" onclick="doLogin()">Masuk</button>
+    <button style="width:100%;margin-top:8px;padding:10px;background:none;
+                   color:#445;border:none;cursor:pointer;font-size:12px"
+            onclick="gantiUrl()">Ganti URL server</button>
   </div>
 </div>
 
 <!-- Step 3: Scanner -->
 <div id="wrap-scan" class="hidden">
   <div class="cam-toggle">
-    <button class="btn-cam" id="btn-on"  onclick="aktifkan()">
-      📷 Aktifkan Kamera
-    </button>
-    <button class="btn-cam" id="btn-off"
-            onclick="matikan()" disabled>
-      ⏹ Stop
-    </button>
+    <button class="btn-cam" id="btn-on"  onclick="aktifkan()">📷 Aktifkan Kamera</button>
+    <button class="btn-cam" id="btn-off" onclick="matikan()" disabled>⏹ Stop</button>
   </div>
-
   <div class="cam-wrap">
     <video id="cam-video" autoplay playsinline muted></video>
     <div class="cam-overlay">
@@ -168,78 +147,105 @@ canvas{display:none}
     </div>
   </div>
   <canvas id="cam-canvas"></canvas>
-
   <div class="sts" id="sts">Tekan Aktifkan Kamera untuk mulai</div>
-
   <div class="manual-row">
-    <input type="text" id="manual-id"
-           placeholder="Atau ketik ID tiket manual...">
+    <input type="text" id="manual-id" placeholder="Atau ketik ID tiket manual...">
     <button class="btn-cek" id="btn-cek" onclick="cekManual()">Cek</button>
   </div>
-
   <div id="hasil"></div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
 <script>
-// ─── State ───────────────────────────────────────
-var GAS_URL  = localStorage.getItem('reaksi2_gas_url') || '';
+var GAS_URL  = '';
 var PASS     = '';
 var stream   = null;
 var loopId   = null;
 var bisaScan = true;
 
-// ─── Setup ───────────────────────────────────────
-if (GAS_URL) {
-  document.getElementById('gas-url').value = GAS_URL;
+// Init — cek localStorage
+(function init() {
+  var saved = localStorage.getItem('reaksi2_url');
+  if (saved) {
+    GAS_URL = saved;
+    document.getElementById('gas-url').value = saved;
+    tampilStep('login');
+  } else {
+    tampilStep('setup');
+  }
+})();
+
+function tampilStep(step) {
   document.getElementById('wrap-setup').classList.add('hidden');
-  document.getElementById('wrap-login').classList.remove('hidden');
+  document.getElementById('wrap-login').classList.add('hidden');
+  document.getElementById('wrap-scan').classList.add('hidden');
+  document.getElementById('wrap-' + step).classList.remove('hidden');
 }
 
 function simpanSetup() {
   var url = document.getElementById('gas-url').value.trim();
   var err = document.getElementById('err-setup');
-  if (!url || url.indexOf('script.google.com') === -1) {
-    err.textContent   = 'URL tidak valid. Harus dari script.google.com';
-    err.style.display = 'block';
-    return;
+  if (!url) {
+    showErr(err, 'URL tidak boleh kosong.'); return;
   }
-  GAS_URL = url;
-  localStorage.setItem('reaksi2_gas_url', GAS_URL);
-  document.getElementById('wrap-setup').classList.add('hidden');
-  document.getElementById('wrap-login').classList.remove('hidden');
+  if (url.indexOf('script.google.com') === -1) {
+    showErr(err, 'URL harus dari script.google.com'); return;
+  }
+  if (url.indexOf('/exec') === -1) {
+    showErr(err, 'URL harus diakhiri /exec — jangan pakai /dev'); return;
+  }
+  // Bersihkan parameter yang tidak perlu
+  GAS_URL = url.split('?')[0];
+  localStorage.setItem('reaksi2_url', GAS_URL);
+  err.style.display = 'none';
+  tampilStep('login');
 }
 
-// ─── Login ───────────────────────────────────────
+function gantiUrl() {
+  localStorage.removeItem('reaksi2_url');
+  GAS_URL = '';
+  tampilStep('setup');
+}
+
+// ── Login ──────────────────────────────────────────
 function doLogin() {
   var p   = document.getElementById('pass-in').value.trim();
   var btn = document.getElementById('btn-login');
   var err = document.getElementById('err-login');
   if (!p) return;
-  btn.disabled = true; btn.textContent = 'Memeriksa...';
+
+  btn.disabled = true;
+  btn.textContent = 'Memeriksa...';
   err.style.display = 'none';
 
-  callGAS('serverCekPass', [p, 'scanner'], function(res) {
-    if (res && res.ok) {
-      PASS = p;
-      document.getElementById('wrap-login').classList.add('hidden');
-      document.getElementById('wrap-scan').classList.remove('hidden');
-    } else {
-      err.textContent   = (res && res.msg) ? res.msg : 'Password salah.';
-      err.style.display = 'block';
-      btn.disabled = false; btn.textContent = 'Masuk';
+  callGAS('serverCekPass', [p, 'scanner'],
+    function(res) {
+      if (res && res.ok) {
+        PASS = p;
+        tampilStep('scan');
+      } else {
+        showErr(err, (res && res.msg) ? res.msg : 'Password salah.');
+        btn.disabled = false;
+        btn.textContent = 'Masuk';
+      }
+    },
+    function(e) {
+      showErr(err, 'Gagal konek: ' + e);
+      btn.disabled = false;
+      btn.textContent = 'Masuk';
     }
-  }, function(e) {
-    err.textContent   = 'Tidak bisa konek ke server: ' + e;
-    err.style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Masuk';
-  });
+  );
 }
 
-// ─── Kamera ──────────────────────────────────────
+// ── Kamera ────────────────────────────────────────
 function aktifkan() {
   setSts('Meminta izin kamera...', '');
   navigator.mediaDevices.getUserMedia({
-    video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } }
+    video: {
+      facingMode: { ideal: 'environment' },
+      width:  { ideal: 1280 },
+      height: { ideal: 720 }
+    }
   })
   .then(function(s) {
     stream = s;
@@ -253,14 +259,14 @@ function aktifkan() {
     setSts('Arahkan kamera ke QR Code', '');
     mulaiLoop();
   })
-  .catch(function(err) {
+  .catch(function(e) {
     var msg =
-      err.name === 'NotAllowedError'
-        ? 'Izin kamera ditolak — tap ikon kunci/kamera di address bar, izinkan, lalu refresh.'
-      : err.name === 'NotFoundError'
-        ? 'Kamera tidak ditemukan.'
-      : 'Error kamera: ' + err.message;
-    setSts(msg, 'err');
+      e.name === 'NotAllowedError'
+        ? 'Izin kamera ditolak — tap ikon kunci di address bar, pilih izinkan kamera, lalu refresh.'
+      : e.name === 'NotFoundError'
+        ? 'Kamera tidak ditemukan di perangkat ini.'
+      : 'Kamera error: ' + e.message;
+    setSts(msg, 'er');
   });
 }
 
@@ -278,6 +284,7 @@ function mulaiLoop() {
   var video  = document.getElementById('cam-video');
   var canvas = document.getElementById('cam-canvas');
   var ctx    = canvas.getContext('2d');
+
   loopId = setInterval(function() {
     if (!bisaScan) return;
     if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
@@ -295,7 +302,7 @@ function mulaiLoop() {
   }, 250);
 }
 
-// ─── Manual ──────────────────────────────────────
+// ── Manual input ──────────────────────────────────
 function cekManual() {
   var id = document.getElementById('manual-id').value.trim();
   if (!id) return;
@@ -303,18 +310,17 @@ function cekManual() {
   prosesId(id);
 }
 
-// ─── Proses ID ───────────────────────────────────
+// ── Proses ID ─────────────────────────────────────
 function prosesId(id) {
   document.getElementById('hasil').innerHTML =
-    '<div style="text-align:center;color:#8899bb;padding:24px;font-size:14px">'
-    + 'Memeriksa ' + id + '...</div>';
+    '<div class="loading">Memeriksa ' + id + '...</div>';
 
   callGAS('serverScanQR', [PASS, id], tampilHasil, function(e) {
     tampilHasil({ ok: false, msg: 'Error koneksi: ' + e });
   });
 }
 
-// ─── Tampil hasil ────────────────────────────────
+// ── Tampil hasil ──────────────────────────────────
 function tampilHasil(res) {
   var html = '';
 
@@ -334,7 +340,7 @@ function tampilHasil(res) {
       + buatMerchBox(res.order)
       + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
       + '</div>';
-    setSts('✓ Valid', 'ok');
+    setSts('✓ Valid — hadir tercatat', 'ok');
 
   } else if (res.msg === 'Tiket sudah digunakan!') {
     var p = res.peserta || {};
@@ -345,9 +351,9 @@ function tampilHasil(res) {
       + '<div class="r-sub">'
         + (p.nama || '') + ' — ' + (p.idPeserta || '')
       + '</div>'
-      + '<div class="r-info" style="color:#fb923c">'
+      + '<div class="r-info">'
       + 'Tiket ini sudah di-scan sebelumnya.<br>'
-      + '<b>Tidak bisa digunakan lagi.</b>'
+      + '<b style="color:#fb923c">Tidak bisa digunakan lagi.</b>'
       + '</div>'
       + buatMerchBox(res.order)
       + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
@@ -362,7 +368,7 @@ function tampilHasil(res) {
       + '<div class="r-sub">' + (res.msg || 'ID tidak ditemukan') + '</div>'
       + '<button class="btn-next" onclick="resetScan()">Coba Lagi ›</button>'
       + '</div>';
-    setSts('✗ Tidak valid', 'err');
+    setSts('✗ Tidak valid', 'er');
   }
 
   document.getElementById('hasil').innerHTML = html;
@@ -395,36 +401,60 @@ function resetScan() {
 }
 
 function setSts(txt, cls) {
-  var el      = document.getElementById('sts');
+  var el = document.getElementById('sts');
   el.textContent = txt;
   el.className   = 'sts' + (cls ? ' ' + cls : '');
 }
 
-// ─── Call GAS via fetch ───────────────────────────
-// Scanner ini hosted di GitHub Pages, bukan di GAS
-// Jadi kita panggil GAS sebagai API via URL parameter
-function callGAS(fn, params, onSuccess, onError) {
-  var url = GAS_URL
-    + '?call=' + encodeURIComponent(fn)
-    + '&params=' + encodeURIComponent(JSON.stringify(params));
+function showErr(el, msg) {
+  el.textContent   = msg;
+  el.style.display = 'block';
+}
 
-  // Pakai no-cors tidak bisa baca response
-  // Solusi: pakai JSONP via script tag injection
-  var cbName = 'cb_' + Date.now();
+// ── callGAS via JSONP ─────────────────────────────
+// Ini cara paling reliable untuk cross-domain ke GAS
+var jsonpCounter = 0;
+
+function callGAS(fn, params, onSuccess, onError) {
+  var cbName = 'gasCallback_' + (++jsonpCounter) + '_' + Date.now();
   var script = document.createElement('script');
+  var done   = false;
+
+  // Timeout 15 detik
+  var timer = setTimeout(function() {
+    if (done) return;
+    done = true;
+    cleanup();
+    onError('Timeout — server tidak merespons.');
+  }, 15000);
 
   window[cbName] = function(data) {
-    delete window[cbName];
-    document.body.removeChild(script);
+    if (done) return;
+    done = true;
+    cleanup();
     onSuccess(data);
   };
 
-  script.onerror = function() {
+  function cleanup() {
+    clearTimeout(timer);
     delete window[cbName];
-    document.body.removeChild(script);
-    onError('Gagal konek ke server.');
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  script.onerror = function() {
+    if (done) return;
+    done = true;
+    cleanup();
+    onError('Script error — periksa URL GAS.');
   };
 
-  script.src = url + '&callback=' + cbName;
-  document.body.appendChild(script);
+  script.src = GAS_URL
+    + '?call='     + encodeURIComponent(fn)
+    + '&params='   + encodeURIComponent(JSON.stringify(params))
+    + '&callback=' + encodeURIComponent(cbName);
+
+  document.head.appendChild(script);
 }
+</script>
+</body>
+</html>
