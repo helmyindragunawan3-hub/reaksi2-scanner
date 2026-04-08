@@ -305,6 +305,313 @@ function matikan() {
   setSts('Kamera dimatikan','');
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Scanner QR — REAKSI 2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:sans-serif;background:#0f1c35;
+     min-height:100vh;padding:20px;color:#fff}
+.hdr{text-align:center;margin-bottom:20px;padding-top:4px}
+.hdr h1{font-size:20px;font-weight:700;color:#c9a84c}
+.hdr p{font-size:12px;color:#8899bb;margin-top:3px}
+.card{max-width:340px;margin:20px auto;
+      background:#1a2744;border-radius:14px;padding:28px}
+.card h2{color:#c9a84c;margin-bottom:6px;font-size:17px}
+.card p{color:#8899bb;font-size:13px;margin-bottom:18px}
+input[type=password],input[type=text]{
+  width:100%;padding:10px 13px;border:1px solid #2d4070;
+  border-radius:8px;font-size:15px;background:#0f1c35;
+  color:#fff;margin-bottom:10px}
+input::placeholder{color:#445}
+.btn-p{width:100%;padding:12px;background:#c9a84c;color:#1a2744;
+       border:none;border-radius:8px;font-size:15px;
+       font-weight:700;cursor:pointer}
+.btn-p:disabled{background:#555;color:#999;cursor:not-allowed}
+.err{color:#f87171;font-size:13px;margin-bottom:10px;display:none;
+     background:rgba(255,0,0,.1);padding:8px 12px;border-radius:6px}
+#wrap-scan{max-width:400px;margin:0 auto}
+.cam-wrap{position:relative;width:100%;
+          border-radius:12px;overflow:hidden;
+          background:#000;margin-bottom:12px}
+#cam-video{width:100%;display:block}
+.cam-overlay{position:absolute;inset:0;display:flex;
+             align-items:center;justify-content:center;pointer-events:none}
+.cam-frame{width:220px;height:220px;border:3px solid #c9a84c;
+           border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.45)}
+.scan-line{position:absolute;width:200px;height:2px;
+           background:rgba(201,168,76,.9);
+           animation:scanMove 2s ease-in-out infinite}
+@keyframes scanMove{
+  0%  {top:calc(50% - 108px)}
+  50% {top:calc(50% + 108px)}
+  100%{top:calc(50% - 108px)}
+}
+.cam-toggle{display:flex;gap:8px;margin-bottom:10px}
+.btn-cam{flex:1;padding:9px;border-radius:8px;border:1px solid #2d4070;
+         background:#1a2744;color:#c9a84c;font-size:13px;
+         font-weight:600;cursor:pointer}
+.btn-cam.on{background:#c9a84c;color:#1a2744;border-color:#c9a84c}
+.btn-cam:disabled{background:#1a2744;color:#445;
+                  border-color:#2d4070;cursor:not-allowed}
+.sts{text-align:center;font-size:12px;color:#8899bb;
+     margin-bottom:10px;min-height:16px;line-height:1.5;padding:0 4px}
+.sts.ok{color:#4ade80}
+.sts.er{color:#f87171}
+.manual-row{display:flex;gap:8px;margin-bottom:14px}
+.manual-row input{flex:1;margin-bottom:0}
+.btn-cek{padding:10px 18px;background:#c9a84c;color:#1a2744;
+         border:none;border-radius:8px;font-size:14px;
+         font-weight:700;cursor:pointer}
+.btn-cek:disabled{background:#555;color:#999;cursor:not-allowed}
+.rcard{border-radius:14px;padding:20px;margin-top:4px;
+       animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.rcard.ok  {background:#071f0f;border:1.5px solid #166534}
+.rcard.warn{background:#1f1200;border:1.5px solid #7c3d12}
+.rcard.fail{background:#1f0707;border:1.5px solid #7f1d1d}
+.r-icon{font-size:32px;text-align:center;margin-bottom:8px}
+.r-nama{font-size:19px;font-weight:700;text-align:center;margin-bottom:3px}
+.r-nama.ok  {color:#4ade80}
+.r-nama.warn{color:#fb923c}
+.r-nama.fail{color:#f87171}
+.r-sub{font-size:13px;color:#aaa;text-align:center;margin-bottom:12px}
+.r-info{background:rgba(255,255,255,.05);border-radius:8px;
+        padding:12px;font-size:13px;line-height:2;color:#ccc}
+.r-info b{color:#fff}
+.merch-box{margin-top:12px;padding:14px;
+           background:rgba(201,168,76,.08);
+           border:1px solid rgba(201,168,76,.2);border-radius:10px}
+.m-title{font-size:11px;color:#8899bb;text-transform:uppercase;
+         letter-spacing:1px;margin-bottom:8px}
+.m-paket{font-size:17px;font-weight:700;color:#c9a84c;margin-bottom:2px}
+.m-harga{font-size:13px;color:#8899bb;margin-bottom:10px}
+.m-sts{display:inline-flex;align-items:center;gap:6px;
+       padding:6px 14px;border-radius:7px;font-size:13px;font-weight:700}
+.m-sts.lunas{background:#071f0f;color:#4ade80;border:1px solid #166534}
+.m-sts.belum{background:#2e0e00;color:#fb923c;border:1px solid #7c2d12}
+.m-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.m-dot.lunas{background:#4ade80}
+.m-dot.belum{background:#fb923c}
+.m-note{margin-top:8px;font-size:12px;color:#fb923c;line-height:1.5}
+.btn-next{width:100%;margin-top:14px;padding:12px;background:#1a2744;
+          color:#c9a84c;border:1.5px solid #c9a84c;border-radius:9px;
+          font-size:14px;font-weight:700;cursor:pointer}
+.hidden{display:none}
+.loading{text-align:center;color:#8899bb;padding:24px;font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>REAKSI 2 — Scanner</h1>
+  <p>Verifikasi kehadiran peserta hari H</p>
+</div>
+
+<!-- Step 1: Setup URL -->
+<div id="wrap-setup">
+  <div class="card">
+    <h2>Setup Scanner</h2>
+    <p>Masukkan URL GAS deployment.<br>
+      <small style="color:#334;word-break:break-all">
+      https://script.google.com/macros/s/.../exec</small>
+    </p>
+    <input type="text" id="gas-url"
+           placeholder="https://script.google.com/macros/s/.../exec">
+    <div class="err" id="err-setup"></div>
+    <button class="btn-p" onclick="simpanSetup()">Lanjut →</button>
+  </div>
+</div>
+
+<!-- Step 2: Login -->
+<div id="wrap-login" class="hidden">
+  <div class="card">
+    <h2>Login Panitia</h2>
+    <p>Masukkan password scanner.</p>
+    <input type="password" id="pass-in"
+           placeholder="Password scanner"
+           onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="err" id="err-login"></div>
+    <button class="btn-p" id="btn-login" onclick="doLogin()">Masuk</button>
+    <button style="width:100%;margin-top:8px;padding:10px;background:none;
+                   color:#445;border:none;cursor:pointer;font-size:12px"
+            onclick="gantiUrl()">Ganti URL server</button>
+  </div>
+</div>
+
+<!-- Step 3: Scanner -->
+<div id="wrap-scan" class="hidden">
+  <div class="cam-toggle">
+    <button class="btn-cam" id="btn-on"  onclick="aktifkan()">
+      📷 Aktifkan Kamera
+    </button>
+    <button class="btn-cam" id="btn-off" onclick="matikan()" disabled>
+      ⏹ Stop
+    </button>
+  </div>
+
+  <div class="cam-wrap" id="cam-wrap">
+    <video id="cam-video" autoplay playsinline muted></video>
+    <canvas id="cam-canvas" style="display:none"></canvas>
+    <div class="cam-overlay">
+      <div class="cam-frame"></div>
+      <div class="scan-line"></div>
+    </div>
+  </div>
+
+  <div class="sts" id="sts">Tekan Aktifkan Kamera untuk mulai</div>
+
+  <div class="manual-row">
+    <input type="text" id="manual-id"
+           placeholder="Atau ketik ID tiket manual...">
+    <button class="btn-cek" id="btn-cek" onclick="cekManual()">Cek</button>
+  </div>
+
+  <div id="hasil"></div>
+</div>
+
+<script>
+// jsQR dimuat inline agar tidak ada masalah CDN
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"
+        onerror="setSts('Gagal load library QR. Periksa koneksi internet.','er')">
+</script>
+<script>
+var GAS_URL  = '';
+var PASS     = '';
+var stream   = null;
+var loopId   = null;
+var bisaScan = true;
+var jsonpN   = 0;
+
+// ── Init ────────────────────────────────────────
+(function() {
+  var saved = localStorage.getItem('reaksi2_url');
+  if (saved) {
+    GAS_URL = saved;
+    document.getElementById('gas-url').value = saved;
+    tampilStep('login');
+  } else {
+    tampilStep('setup');
+  }
+})();
+
+function tampilStep(step) {
+  ['setup','login','scan'].forEach(function(s) {
+    document.getElementById('wrap-' + s).classList.add('hidden');
+  });
+  document.getElementById('wrap-' + step).classList.remove('hidden');
+}
+
+// ── Setup ───────────────────────────────────────
+function simpanSetup() {
+  var url = document.getElementById('gas-url').value.trim();
+  var err = document.getElementById('err-setup');
+  if (!url) { showErr(err,'URL tidak boleh kosong.'); return; }
+  if (url.indexOf('script.google.com') === -1) {
+    showErr(err,'URL harus dari script.google.com'); return;
+  }
+  if (url.indexOf('/exec') === -1) {
+    showErr(err,'URL harus berisi /exec — jangan pakai /dev'); return;
+  }
+  GAS_URL = url.split('?')[0];
+  localStorage.setItem('reaksi2_url', GAS_URL);
+  err.style.display = 'none';
+  tampilStep('login');
+}
+
+function gantiUrl() {
+  localStorage.removeItem('reaksi2_url');
+  GAS_URL = '';
+  tampilStep('setup');
+}
+
+// ── Login ───────────────────────────────────────
+function doLogin() {
+  var p   = document.getElementById('pass-in').value.trim();
+  var btn = document.getElementById('btn-login');
+  var err = document.getElementById('err-login');
+  if (!p) return;
+  btn.disabled = true; btn.textContent = 'Memeriksa...';
+  err.style.display = 'none';
+
+  callGAS('serverCekPass', [p, 'scanner'],
+    function(res) {
+      if (res && res.ok) {
+        PASS = p;
+        tampilStep('scan');
+      } else {
+        showErr(err, (res && res.msg) || 'Password salah.');
+        btn.disabled = false; btn.textContent = 'Masuk';
+      }
+    },
+    function(e) {
+      showErr(err, 'Gagal konek: ' + e);
+      btn.disabled = false; btn.textContent = 'Masuk';
+    }
+  );
+}
+
+// ── Kamera ──────────────────────────────────────
+function aktifkan() {
+  setSts('Meminta izin kamera...','');
+
+  // Minta resolusi tinggi agar QR terbaca
+  var constraints = {
+    video: {
+      facingMode: { ideal: 'environment' },
+      width:      { ideal: 1920 },
+      height:     { ideal: 1080 }
+    }
+  };
+
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(s) {
+      stream = s;
+      var v  = document.getElementById('cam-video');
+      v.srcObject = stream;
+
+      v.onloadedmetadata = function() {
+        v.play();
+
+        // Set tinggi cam-wrap proporsional ke video asli
+        var wrap = document.getElementById('cam-wrap');
+        var ratio = v.videoHeight / v.videoWidth;
+        wrap.style.height = (wrap.offsetWidth * ratio) + 'px';
+
+        bisaScan = true;
+        document.getElementById('btn-on').disabled  = true;
+        document.getElementById('btn-off').disabled = false;
+        document.getElementById('btn-off').classList.add('on');
+        setSts('Arahkan kamera ke QR Code','');
+        mulaiLoop();
+      };
+    })
+    .catch(function(e) {
+      var msg =
+        e.name === 'NotAllowedError'
+          ? 'Izin kamera ditolak — tap ikon kunci di address bar, izinkan kamera, refresh.'
+        : e.name === 'NotFoundError'
+          ? 'Kamera tidak ditemukan.'
+        : 'Error kamera: ' + e.message;
+      setSts(msg, 'er');
+    });
+}
+
+function matikan() {
+  if (stream) { stream.getTracks().forEach(function(t){t.stop();}); stream=null; }
+  if (loopId) { clearInterval(loopId); loopId=null; }
+  var v = document.getElementById('cam-video');
+  v.srcObject = null;
+  document.getElementById('btn-on').disabled  = false;
+  document.getElementById('btn-off').disabled = true;
+  document.getElementById('btn-off').classList.remove('on');
+  setSts('Kamera dimatikan','');
+}
+
 function mulaiLoop() {
   var video  = document.getElementById('cam-video');
   var canvas = document.getElementById('cam-canvas');
@@ -341,6 +648,157 @@ function mulaiLoop() {
     }
   }, 300);
 }
+
+// ── Manual ──────────────────────────────────────
+function cekManual() {
+  var id = document.getElementById('manual-id').value.trim();
+  if (!id) return;
+  document.getElementById('btn-cek').disabled = true;
+  prosesId(id);
+}
+
+// ── Proses ID ────────────────────────────────────
+function prosesId(id) {
+  document.getElementById('hasil').innerHTML =
+    '<div class="loading">Memeriksa ' + id + '...</div>';
+
+  callGAS('serverScanQR', [PASS, id],
+    tampilHasil,
+    function(e) { tampilHasil({ ok: false, msg: 'Error: ' + e }); }
+  );
+}
+
+// ── Tampil hasil ─────────────────────────────────
+function tampilHasil(res) {
+  var html = '';
+
+  if (res.ok) {
+    var p = res.peserta;
+    html =
+      '<div class="rcard ok">'
+      + '<div class="r-icon">✅</div>'
+      + '<div class="r-nama ok">' + p.nama + '</div>'
+      + '<div class="r-sub">Angkatan ' + p.tahunLulus
+        + ' &nbsp;·&nbsp; ' + p.idPeserta + '</div>'
+      + '<div class="r-info">'
+      + '<b>Status:</b> HADIR ✓<br>'
+      + '<b>Email:</b> ' + p.email + '<br>'
+      + '<b>Merch:</b> ' + (p.beliMerch === 'YA' ? 'Ya' : 'Tidak')
+      + '</div>'
+      + buatMerchBox(res.order)
+      + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
+      + '</div>';
+    setSts('✓ Valid — hadir tercatat','ok');
+
+  } else if (res.msg === 'Tiket sudah digunakan!') {
+    var p = res.peserta || {};
+    html =
+      '<div class="rcard warn">'
+      + '<div class="r-icon">⚠️</div>'
+      + '<div class="r-nama warn">Tiket Sudah Digunakan</div>'
+      + '<div class="r-sub">'
+        + (p.nama||'') + ' — ' + (p.idPeserta||'')
+      + '</div>'
+      + '<div class="r-info">'
+      + 'Tiket ini sudah di-scan sebelumnya.<br>'
+      + '<b style="color:#fb923c">Tidak bisa digunakan lagi.</b>'
+      + '</div>'
+      + buatMerchBox(res.order)
+      + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
+      + '</div>';
+    setSts('⚠ Tiket sudah digunakan','');
+
+  } else {
+    html =
+      '<div class="rcard fail">'
+      + '<div class="r-icon">❌</div>'
+      + '<div class="r-nama fail">Tidak Valid</div>'
+      + '<div class="r-sub">' + (res.msg||'ID tidak ditemukan') + '</div>'
+      + '<button class="btn-next" onclick="resetScan()">Coba Lagi ›</button>'
+      + '</div>';
+    setSts('✗ Tidak valid','er');
+  }
+
+  document.getElementById('hasil').innerHTML = html;
+}
+
+function buatMerchBox(order) {
+  if (!order) return '';
+  var isLunas = order.statusBayar === 'LUNAS';
+  var cls     = isLunas ? 'lunas' : 'belum';
+  var stsTxt  = isLunas ? '✓ LUNAS' : '⚠ BELUM LUNAS';
+  var note    = isLunas ? ''
+    : '<div class="m-note">Ingatkan peserta menyelesaikan pembayaran.</div>';
+  return '<div class="merch-box">'
+    + '<div class="m-title">Merchandise dipesan</div>'
+    + '<div class="m-paket">' + (order.paketNama||order.paketId) + '</div>'
+    + '<div class="m-harga">Rp '
+      + Number(order.harga).toLocaleString('id') + '</div>'
+    + '<div class="m-sts ' + cls + '">'
+    + '<div class="m-dot ' + cls + '"></div>'
+    + stsTxt + '</div>'
+    + note + '</div>';
+}
+
+function resetScan() {
+  document.getElementById('hasil').innerHTML = '';
+  document.getElementById('manual-id').value = '';
+  document.getElementById('btn-cek').disabled = false;
+  bisaScan = true;
+  setSts('Arahkan kamera ke QR Code','');
+}
+
+function setSts(txt, cls) {
+  var el = document.getElementById('sts');
+  el.textContent = txt;
+  el.className   = 'sts' + (cls ? ' ' + cls : '');
+}
+
+function showErr(el, msg) {
+  el.textContent   = msg;
+  el.style.display = 'block';
+}
+
+// ── callGAS via JSONP ────────────────────────────
+function callGAS(fn, params, onSuccess, onError) {
+  var cbName = 'gcb_' + (++jsonpN) + '_' + Date.now();
+  var script = document.createElement('script');
+  var done   = false;
+
+  var timer = setTimeout(function() {
+    if (done) return;
+    done = true; cleanup();
+    onError('Timeout 15 detik — server tidak merespons.');
+  }, 15000);
+
+  window[cbName] = function(data) {
+    if (done) return;
+    done = true; cleanup();
+    onSuccess(data);
+  };
+
+  function cleanup() {
+    clearTimeout(timer);
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  script.onerror = function() {
+    if (done) return;
+    done = true; cleanup();
+    onError('Gagal load script — periksa URL GAS.');
+  };
+
+  script.src = GAS_URL
+    + '?call='     + encodeURIComponent(fn)
+    + '&params='   + encodeURIComponent(JSON.stringify(params))
+    + '&callback=' + encodeURIComponent(cbName);
+
+  document.head.appendChild(script);
+}
+</script>
+</body>
+</html>
 
 // ── Manual ──────────────────────────────────────
 function cekManual() {
