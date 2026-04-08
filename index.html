@@ -29,8 +29,10 @@ input::placeholder{color:#445}
 #wrap-scan{max-width:400px;margin:0 auto}
 .cam-wrap{position:relative;width:100%;
           border-radius:12px;overflow:hidden;
-          background:#000;margin-bottom:12px}
-#cam-video{width:100%;display:block}
+          background:#000;margin-bottom:12px;
+          /* Default aspect ratio sebelum kamera nyala */
+          aspect-ratio: 3/4;} 
+#cam-video{width:100%;height:100%;object-fit:cover;display:block}
 .cam-overlay{position:absolute;inset:0;display:flex;
               align-items:center;justify-content:center;pointer-events:none}
 .cam-frame{width:220px;height:220px;border:3px solid #c9a84c;
@@ -145,7 +147,6 @@ input::placeholder{color:#445}
 
   <div class="cam-wrap" id="cam-wrap">
     <video id="cam-video" autoplay playsinline muted></video>
-    <canvas id="cam-canvas" style="display:none"></canvas>
     <div class="cam-overlay">
       <div class="cam-frame"></div>
       <div class="scan-line"></div>
@@ -163,14 +164,12 @@ input::placeholder{color:#445}
   <div id="hasil"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"
-        onerror="setSts('Gagal load library QR. Periksa koneksi internet.','er')">
-</script>
+<script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.umd.min.js"></script>
 
 <script>
 var GAS_URL  = '';
 var PASS      = '';
-var stream   = null;
+var scanner  = null; // Instance dari QrScanner
 var bisaScan = true;
 var jsonpN   = 0;
 
@@ -243,80 +242,50 @@ function doLogin() {
   );
 }
 
-// ── Kamera ──────────────────────────────────────
+// ── Kamera (Menggunakan QrScanner) ──────────────
 function aktifkan() {
   setSts('Meminta izin kamera...','');
+  var video = document.getElementById('cam-video');
 
-  var constraints = {
-    video: {
-      facingMode: { ideal: 'environment' },
-      width: { ideal: 1280 },
-      height: { ideal: 720 }
-    }
-  };
+  // Inisialisasi scanner jika belum ada
+  if (!scanner) {
+    scanner = new QrScanner(
+      video,
+      function(result) {
+        // Handle hasil scan (kompatibel dengan berbagai versi respon library)
+        var text = (typeof result === 'string') ? result : (result.data || '');
+        if (bisaScan && text.trim() !== '') {
+          bisaScan = false; // Kunci agar tidak spam scan
+          setSts('QR terdeteksi!', 'ok');
+          prosesId(text.trim());
+        }
+      },
+      {
+        returnDetailedScanResult: true,
+        highlightScanRegion: false, // Dimatikan karena kita punya UI .cam-overlay sendiri
+        maxScansPerSecond: 5
+      }
+    );
+  }
 
-  navigator.mediaDevices.getUserMedia(constraints)
-    .then(function(s) {
-      stream = s;
-      var v = document.getElementById('cam-video');
-      v.setAttribute("playsinline", true);
-      v.srcObject = stream;
-
-      v.onloadedmetadata = function() {
-        v.play();
-        var wrap = document.getElementById('cam-wrap');
-        var ratio = v.videoHeight / v.videoWidth;
-        wrap.style.height = (wrap.offsetWidth * ratio) + 'px';
-
-        bisaScan = true;
-        document.getElementById('btn-on').disabled  = true;
-        document.getElementById('btn-off').disabled = false;
-        document.getElementById('btn-off').classList.add('on');
-        setSts('Arahkan kamera ke QR Code','');
-        requestAnimationFrame(tick);
-      };
-    })
-    .catch(function(e) {
-      setSts('Error kamera: ' + e.message, 'er');
-    });
+  // Mulai kamera
+  scanner.start().then(function() {
+    bisaScan = true;
+    document.getElementById('btn-on').disabled  = true;
+    document.getElementById('btn-off').disabled = false;
+    document.getElementById('btn-off').classList.add('on');
+    setSts('Arahkan kamera ke QR Code','');
+  }).catch(function(e) {
+    setSts('Error kamera: ' + (e || 'Kamera tidak ditemukan/diizinkan'), 'er');
+  });
 }
 
 function matikan() {
-  if (stream) { stream.getTracks().forEach(function(t){t.stop();}); stream=null; }
-  var v = document.getElementById('cam-video');
-  v.srcObject = null;
+  if (scanner) scanner.stop();
   document.getElementById('btn-on').disabled  = false;
   document.getElementById('btn-off').disabled = true;
   document.getElementById('btn-off').classList.remove('on');
   setSts('Kamera dimatikan','');
-}
-
-function tick() {
-  var video = document.getElementById('cam-video');
-  var canvas = document.getElementById('cam-canvas');
-  if (!video || !canvas) return;
-  var ctx = canvas.getContext('2d', { willReadFrequently: true });
-
-  if (video.readyState === video.HAVE_ENOUGH_DATA && bisaScan) {
-    canvas.height = video.videoHeight;
-    canvas.width = video.videoWidth;
-    ctx.imageSmoothingEnabled = false; 
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var code = jsQR(imageData.data, imageData.width, imageData.height, {
-      inversionAttempts: "attemptBoth",
-    });
-
-    if (code && code.data && code.data.trim() !== "") {
-      bisaScan = false;
-      setSts('QR terdeteksi!', 'ok');
-      prosesId(code.data.trim());
-    }
-  }
-  if (stream) {
-    requestAnimationFrame(tick);
-  }
 }
 
 // ── Manual ──────────────────────────────────────
@@ -324,6 +293,7 @@ function cekManual() {
   var id = document.getElementById('manual-id').value.trim();
   if (!id) return;
   document.getElementById('btn-cek').disabled = true;
+  bisaScan = false; // Kunci scanner otomatis saat cek manual
   prosesId(id);
 }
 
@@ -367,7 +337,7 @@ function resetScan() {
   document.getElementById('hasil').innerHTML = '';
   document.getElementById('manual-id').value = '';
   document.getElementById('btn-cek').disabled = false;
-  bisaScan = true;
+  bisaScan = true; // Buka kunci scanner
   setSts('Arahkan kamera ke QR Code','');
 }
 
@@ -383,6 +353,7 @@ function showErr(el, msg) {
   el.style.display = 'block';
 }
 
+// ── API Google Apps Script ───────────────────────
 function callGAS(fn, params, onSuccess, onError) {
   var cbName = 'gcb_' + (++jsonpN) + '_' + Date.now();
   var script = document.createElement('script');
