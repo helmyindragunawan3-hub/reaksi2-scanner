@@ -11,8 +11,6 @@ body{font-family:sans-serif;background:#0f1c35;
 .hdr{text-align:center;margin-bottom:18px;padding-top:4px}
 .hdr h1{font-size:20px;font-weight:700;color:#c9a84c}
 .hdr p{font-size:12px;color:#8899bb;margin-top:3px}
-
-/* ── Login ── */
 .login-card{max-width:340px;margin:20px auto;
             background:#1a2744;border-radius:14px;padding:28px}
 .login-card h2{color:#c9a84c;margin-bottom:6px;font-size:17px}
@@ -23,24 +21,22 @@ input[type=password],input[type=text]{
   color:#fff;margin-bottom:10px}
 input::placeholder{color:#445}
 .btn-p{width:100%;padding:12px;background:#c9a84c;color:#1a2744;
-       border:none;border-radius:8px;font-size:15px;font-weight:700;
-       cursor:pointer}
+       border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-p:disabled{background:#555;color:#999;cursor:not-allowed}
 .err-txt{color:#f87171;font-size:13px;margin-bottom:10px;display:none;
          background:rgba(255,0,0,.1);padding:8px 12px;border-radius:6px}
-
-/* ── Tabs ── */
 .tabs{display:flex;gap:6px;margin-bottom:14px}
 .tab{flex:1;padding:9px;border-radius:8px;border:none;
      background:#1a2744;color:#8899bb;font-size:13px;
      font-weight:600;cursor:pointer;text-align:center}
 .tab.on{background:#c9a84c;color:#1a2744}
-
-/* ── Scanner ── */
 #wrap-scan{max-width:400px;margin:0 auto}
+
+/* Kamera — pakai div container, video diisi oleh QrScanner */
 .cam-wrap{position:relative;width:100%;border-radius:12px;
-          overflow:hidden;background:#000;margin-bottom:12px}
-#cam-video{width:100%;display:block}
+          overflow:hidden;background:#000;margin-bottom:12px;
+          aspect-ratio:1}
+#cam-video{width:100%;height:100%;object-fit:cover;display:block}
 .cam-overlay{position:absolute;inset:0;display:flex;
              align-items:center;justify-content:center;pointer-events:none}
 .cam-frame{width:220px;height:220px;border:3px solid #c9a84c;
@@ -58,7 +54,8 @@ input::placeholder{color:#445}
          background:#1a2744;color:#c9a84c;font-size:13px;
          font-weight:600;cursor:pointer}
 .btn-cam.on{background:#c9a84c;color:#1a2744;border-color:#c9a84c}
-.btn-cam:disabled{background:#1a2744;color:#445;border-color:#2d4070;cursor:not-allowed}
+.btn-cam:disabled{background:#1a2744;color:#445;
+                  border-color:#2d4070;cursor:not-allowed}
 .sts{text-align:center;font-size:12px;color:#8899bb;
      margin-bottom:10px;min-height:16px;line-height:1.5;padding:0 4px}
 .sts.ok{color:#4ade80}
@@ -69,8 +66,6 @@ input::placeholder{color:#445}
          border:none;border-radius:8px;font-size:14px;
          font-weight:700;cursor:pointer}
 .btn-cek:disabled{background:#555;color:#999;cursor:not-allowed}
-
-/* ── Result cards ── */
 .rcard{border-radius:14px;padding:20px;margin-top:4px;
        animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
@@ -101,11 +96,8 @@ input::placeholder{color:#445}
 .m-dot.lunas{background:#4ade80}
 .m-dot.belum{background:#fb923c}
 .m-note{margin-top:8px;font-size:12px;color:#fb923c;line-height:1.5}
-
-/* ── Nomor urut doorprize ── */
-.nomor-box{margin-top:14px;background:#1a2744;
-           border:2px solid #c9a84c;border-radius:12px;
-           padding:16px;text-align:center}
+.nomor-box{margin-top:14px;background:#1a2744;border:2px solid #c9a84c;
+           border-radius:12px;padding:16px;text-align:center}
 .nomor-label{font-size:11px;color:#8899bb;text-transform:uppercase;
              letter-spacing:2px;margin-bottom:6px}
 .nomor-besar{font-size:52px;font-weight:900;color:#c9a84c;
@@ -113,14 +105,11 @@ input::placeholder{color:#445}
              text-shadow:0 0 20px rgba(201,168,76,.3)}
 .nomor-sub{font-size:12px;color:#8899bb}
 .btn-print-thermal{width:100%;margin-top:12px;padding:12px;
-                   background:#c9a84c;color:#1a2744;
-                   border:none;border-radius:9px;font-size:14px;
-                   font-weight:700;cursor:pointer}
+                   background:#c9a84c;color:#1a2744;border:none;
+                   border-radius:9px;font-size:14px;font-weight:700;cursor:pointer}
 .btn-next{width:100%;margin-top:10px;padding:12px;background:#1a2744;
           color:#c9a84c;border:1.5px solid #c9a84c;border-radius:9px;
           font-size:14px;font-weight:700;cursor:pointer}
-
-/* ── Doorprize tab ── */
 #wrap-doorprize{max-width:400px;margin:0 auto}
 .dp-header{background:#1a2744;border-radius:12px;padding:16px;
            margin-bottom:14px;text-align:center}
@@ -132,28 +121,21 @@ input::placeholder{color:#445}
 .btn-refresh{width:100%;padding:11px;background:#1a2744;color:#c9a84c;
              border:1px solid #c9a84c;border-radius:9px;font-size:13px;
              font-weight:600;cursor:pointer;margin-bottom:14px}
-
-/* Modal undi */
 .modal-bg{display:none;position:fixed;inset:0;
           background:rgba(0,0,0,.8);z-index:200;
           align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal{background:#1a2744;border-radius:16px;padding:28px;
-       max-width:360px;width:100%;text-align:center;
-       border:2px solid #c9a84c}
-.modal h2{color:#c9a84c;font-size:20px;margin-bottom:16px;
-          font-family:Georgia,serif}
-.undi-num{font-size:72px;font-weight:900;color:#f0d080;
-          font-family:Georgia,serif;line-height:1;
-          margin:16px 0;animation:pulse 1s ease infinite}
+       max-width:360px;width:100%;text-align:center;border:2px solid #c9a84c}
+.modal h2{color:#c9a84c;font-size:20px;margin-bottom:16px;font-family:Georgia,serif}
+.undi-num{font-size:72px;font-weight:900;color:#f0d080;font-family:Georgia,serif;
+          line-height:1;margin:16px 0;animation:pulse 1s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
 .undi-nama{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
 .undi-sub{font-size:13px;color:#8899bb}
 .btn-modal{padding:12px 28px;background:#c9a84c;color:#1a2744;
            border:none;border-radius:9px;font-size:15px;
            font-weight:700;cursor:pointer;margin-top:18px}
-
-/* Daftar hadir */
 .hadir-item{background:#1a2744;border-radius:9px;padding:12px 14px;
             margin-bottom:7px;display:flex;align-items:center;gap:12px}
 .hadir-no{font-size:18px;font-weight:700;color:#c9a84c;
@@ -162,32 +144,25 @@ input::placeholder{color:#445}
 .hadir-nama{font-size:14px;font-weight:600;color:#fff}
 .hadir-sub{font-size:12px;color:#8899bb;margin-top:2px}
 .hadir-time{font-size:11px;color:#445;flex-shrink:0}
-
-/* ── Thermal print ── */
 .thermal-modal{display:none;position:fixed;inset:0;background:#fff;
-               z-index:300;padding:0}
+               z-index:300;overflow-y:auto}
 .thermal-modal.show{display:block}
 .thermal-content{width:58mm;margin:0 auto;padding:4mm 3mm;
                  font-family:'Courier New',monospace;
-                 font-size:9pt;color:#000;line-height:1.4}
+                 font-size:9pt;color:#000;line-height:1.5}
 .th-center{text-align:center}
 .th-bold{font-weight:700}
-.th-big{font-size:22pt;font-weight:900;letter-spacing:2px}
-.th-line{border-top:1px dashed #000;margin:4px 0}
-.th-small{font-size:7pt;color:#555}
-.btn-close-thermal{position:fixed;top:10px;right:10px;
-                   padding:8px 16px;background:#1a2744;color:#fff;
-                   border:none;border-radius:7px;font-size:13px;
-                   font-weight:600;cursor:pointer;z-index:301}
+.th-big{font-size:22pt;font-weight:900;letter-spacing:3px}
+.th-line{border-top:1px dashed #000;margin:5px 0}
+.th-small{font-size:7.5pt;color:#333}
+.btn-close-thermal{position:fixed;top:10px;right:10px;padding:8px 16px;
+                   background:#1a2744;color:#fff;border:none;border-radius:7px;
+                   font-size:13px;font-weight:600;cursor:pointer;z-index:301}
 @media print{
-  .btn-close-thermal{display:none}
-  body{margin:0;padding:0}
-  .thermal-modal{position:static}
-  *:not(.thermal-modal):not(.thermal-content):not(.thermal-content *){
-    display:none !important}
+  .btn-close-thermal{display:none!important}
+  body>*:not(.thermal-modal){display:none!important}
+  .thermal-modal{display:block!important;position:static}
 }
-
-/* ── Setup ── */
 .setup-card{max-width:340px;margin:20px auto;
             background:#1a2744;border-radius:14px;padding:28px}
 .hidden{display:none}
@@ -204,7 +179,7 @@ input::placeholder{color:#445}
 <!-- Setup URL -->
 <div id="wrap-setup">
   <div class="setup-card">
-    <h2 style="color:#c9a84c;margin-bottom:6px;font-size:17px">Setup</h2>
+    <h2 style="color:#c9a84c;margin-bottom:6px;font-size:17px">Setup Scanner</h2>
     <p style="color:#8899bb;font-size:13px;margin-bottom:18px">
       Masukkan URL GAS deployment (/exec).
     </p>
@@ -230,10 +205,8 @@ input::placeholder{color:#445}
   </div>
 </div>
 
-<!-- Main app -->
+<!-- Main -->
 <div id="wrap-main" class="hidden">
-
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab on" id="tab-scan" onclick="setTab('scan')">
       📷 Scan
@@ -243,7 +216,7 @@ input::placeholder{color:#445}
     </button>
   </div>
 
-  <!-- Scan tab -->
+  <!-- Scan -->
   <div id="wrap-scan">
     <div class="cam-toggle">
       <button class="btn-cam" id="btn-on"  onclick="aktifkan()">
@@ -253,7 +226,6 @@ input::placeholder{color:#445}
         ⏹ Stop
       </button>
     </div>
-
     <div class="cam-wrap">
       <video id="cam-video" autoplay playsinline muted></video>
       <div class="cam-overlay">
@@ -261,43 +233,32 @@ input::placeholder{color:#445}
         <div class="scan-line"></div>
       </div>
     </div>
-    <canvas id="cam-canvas" style="display:none"></canvas>
-
     <div class="sts" id="sts">Tekan Aktifkan Kamera untuk mulai</div>
-
     <div class="manual-row">
       <input type="text" id="manual-id"
              placeholder="Atau ketik ID tiket manual...">
       <button class="btn-cek" id="btn-cek" onclick="cekManual()">Cek</button>
     </div>
-
     <div id="hasil"></div>
   </div>
 
-  <!-- Doorprize tab -->
+  <!-- Doorprize -->
   <div id="wrap-doorprize" class="hidden">
     <div class="dp-header">
       <div class="dp-total" id="dp-total">0</div>
       <div class="dp-lbl">Peserta Hadir</div>
     </div>
-    <button class="btn-undi" onclick="bukaUndi()">
-      🎉 Undi Doorprize!
-    </button>
-    <button class="btn-refresh" onclick="muatDoorprize()">
-      🔄 Refresh Data
-    </button>
-    <div id="dp-list">
-      <div class="loading">Memuat data...</div>
-    </div>
+    <button class="btn-undi" onclick="bukaUndi()">🎉 Undi Doorprize!</button>
+    <button class="btn-refresh" onclick="muatDoorprize()">🔄 Refresh Data</button>
+    <div id="dp-list"><div class="loading">Memuat data...</div></div>
   </div>
-
 </div>
 
 <!-- Modal undi -->
 <div class="modal-bg" id="modal-undi">
   <div class="modal">
     <h2>🎉 Pemenang Doorprize</h2>
-    <div class="undi-num" id="undi-num">—</div>
+    <div class="undi-num"  id="undi-num">—</div>
     <div class="undi-nama" id="undi-nama">—</div>
     <div class="undi-sub"  id="undi-sub">—</div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
@@ -309,489 +270,442 @@ input::placeholder{color:#445}
   </div>
 </div>
 
-<!-- Thermal print modal -->
+<!-- Thermal modal -->
 <div class="thermal-modal" id="thermal-modal">
-  <button class="btn-close-thermal" onclick="tutupThermal()">
-    ✕ Tutup
-  </button>
+  <button class="btn-close-thermal" onclick="tutupThermal()">✕ Tutup</button>
   <div class="thermal-content" id="thermal-content"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
+<!-- QrScanner dari unpkg — lebih reliable dari cdnjs untuk library ini -->
+<script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.umd.min.js"></script>
 <script>
-// ── State ──────────────────────────────────────
+// ── State ─────────────────────────────────────
 var GAS_URL     = '';
 var PASS        = '';
-var stream      = null;
-var loopId      = null;
+var qrScanner   = null;   // instance QrScanner
 var bisaScan    = true;
 var jsonpN      = 0;
 var dpData      = [];
 var lastScanRes = null;
+var undiInterval= null;
 
-// ── Init ────────────────────────────────────────
+// ── Init ──────────────────────────────────────
 (function(){
   var saved = localStorage.getItem('reaksi2_url');
-  if (saved) {
-    GAS_URL = saved;
-    document.getElementById('gas-url').value = saved;
-    tampilStep('login');
-  } else {
-    tampilStep('setup');
-  }
+  if(saved){ GAS_URL=saved; document.getElementById('gas-url').value=saved; tampilStep('login'); }
+  else { tampilStep('setup'); }
 })();
 
-function tampilStep(step) {
-  ['setup','login','main'].forEach(function(s) {
-    document.getElementById('wrap-' + s).classList.add('hidden');
+function tampilStep(s){
+  ['setup','login','main'].forEach(function(x){
+    document.getElementById('wrap-'+x).classList.add('hidden');
   });
-  document.getElementById('wrap-' + step).classList.remove('hidden');
+  document.getElementById('wrap-'+s).classList.remove('hidden');
 }
 
-// ── Setup ───────────────────────────────────────
-function simpanSetup() {
-  var url = document.getElementById('gas-url').value.trim();
-  var err = document.getElementById('err-setup');
-  if (!url) { showErr(err,'URL tidak boleh kosong.'); return; }
-  if (url.indexOf('script.google.com') === -1) {
-    showErr(err,'URL harus dari script.google.com'); return;
-  }
-  if (url.indexOf('/exec') === -1) {
-    showErr(err,'URL harus berisi /exec'); return;
-  }
-  GAS_URL = url.split('?')[0];
-  localStorage.setItem('reaksi2_url', GAS_URL);
-  err.style.display = 'none';
+// ── Setup ─────────────────────────────────────
+function simpanSetup(){
+  var url=document.getElementById('gas-url').value.trim();
+  var err=document.getElementById('err-setup');
+  if(!url){showErr(err,'URL tidak boleh kosong.');return;}
+  if(url.indexOf('script.google.com')===-1){showErr(err,'URL harus dari script.google.com');return;}
+  if(url.indexOf('/exec')===-1){showErr(err,'URL harus berisi /exec');return;}
+  GAS_URL=url.split('?')[0];
+  localStorage.setItem('reaksi2_url',GAS_URL);
+  err.style.display='none';
   tampilStep('login');
 }
-
-function gantiUrl() {
+function gantiUrl(){
   localStorage.removeItem('reaksi2_url');
-  GAS_URL = '';
+  GAS_URL='';
   tampilStep('setup');
 }
 
-// ── Login ───────────────────────────────────────
-function doLogin() {
-  var p   = document.getElementById('pass-in').value.trim();
-  var btn = document.getElementById('btn-login');
-  var err = document.getElementById('err-login');
-  if (!p) return;
-  btn.disabled = true; btn.textContent = 'Memeriksa...';
-  err.style.display = 'none';
-
-  callGAS('serverCekPass', [p, 'scanner'],
-    function(res) {
-      if (res && res.ok) {
-        PASS = p;
+// ── Login ─────────────────────────────────────
+function doLogin(){
+  var p=document.getElementById('pass-in').value.trim();
+  var btn=document.getElementById('btn-login');
+  var err=document.getElementById('err-login');
+  if(!p)return;
+  btn.disabled=true; btn.textContent='Memeriksa...';
+  err.style.display='none';
+  callGAS('serverCekPass',[p,'scanner'],
+    function(res){
+      if(res&&res.ok){
+        PASS=p;
         tampilStep('main');
         muatDoorprize();
       } else {
-        showErr(err, (res && res.msg) || 'Password salah.');
-        btn.disabled = false; btn.textContent = 'Masuk';
+        showErr(err,(res&&res.msg)||'Password salah.');
+        btn.disabled=false; btn.textContent='Masuk';
       }
     },
-    function(e) {
-      showErr(err, 'Gagal konek: ' + e);
-      btn.disabled = false; btn.textContent = 'Masuk';
+    function(e){
+      showErr(err,'Gagal konek: '+e);
+      btn.disabled=false; btn.textContent='Masuk';
     }
   );
 }
 
-// ── Tabs ────────────────────────────────────────
-function setTab(tab) {
-  document.getElementById('wrap-scan')
-    .classList.toggle('hidden', tab !== 'scan');
-  document.getElementById('wrap-doorprize')
-    .classList.toggle('hidden', tab !== 'doorprize');
-  document.getElementById('tab-scan')
-    .classList.toggle('on', tab === 'scan');
-  document.getElementById('tab-doorprize')
-    .classList.toggle('on', tab === 'doorprize');
-  if (tab === 'doorprize') muatDoorprize();
+// ── Tabs ──────────────────────────────────────
+function setTab(tab){
+  document.getElementById('wrap-scan').classList.toggle('hidden',tab!=='scan');
+  document.getElementById('wrap-doorprize').classList.toggle('hidden',tab!=='doorprize');
+  document.getElementById('tab-scan').classList.toggle('on',tab==='scan');
+  document.getElementById('tab-doorprize').classList.toggle('on',tab==='doorprize');
+  if(tab==='doorprize') muatDoorprize();
 }
 
-// ── Kamera ──────────────────────────────────────
-function aktifkan() {
-  setSts('Meminta izin kamera...', '');
-  navigator.mediaDevices.getUserMedia({
-    video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } }
-  })
-  .then(function(s) {
-    stream = s;
-    var v  = document.getElementById('cam-video');
-    v.srcObject = stream;
-    v.onloadedmetadata = function() {
-      v.play();
+// ── Kamera — QrScanner (Nimiq) ────────────────
+// Berbeda dari jsQR: QrScanner mengelola stream sendiri,
+// tidak perlu loop manual atau canvas getImageData.
+// Autofokus dan resolusi ditangani otomatis oleh library.
+function aktifkan(){
+  setSts('Meminta izin kamera...','');
+
+  var video = document.getElementById('cam-video');
+
+  // Buat instance baru kalau belum ada
+  if(!qrScanner){
+    qrScanner = new QrScanner(
+      video,
+      function(result){
+        // QrScanner v1.4 mengembalikan object {data, ...}
+        var teks = (typeof result === 'string') ? result : (result.data || '');
+        teks = teks.trim();
+        if(!bisaScan || !teks) return;
+        bisaScan = false;
+        setSts('QR terdeteksi — memeriksa...','ok');
+        // Pause setelah deteksi agar tidak double-scan
+        qrScanner.pause();
+        prosesId(teks);
+      },
+      {
+        // Pakai kamera belakang
+        preferredCamera:      'environment',
+        // Scan region tengah layar (lebih akurat, lebih cepat)
+        calculateScanRegion:  function(video){
+          var size = Math.min(video.videoWidth, video.videoHeight) * 0.7;
+          return {
+            x:      (video.videoWidth  - size) / 2,
+            y:      (video.videoHeight - size) / 2,
+            width:  size,
+            height: size,
+          };
+        },
+        // Matikan highlight bawaan library, kita punya overlay sendiri
+        highlightScanRegion:  false,
+        highlightCodeOutline: false,
+        // Max 10 scan per detik
+        maxScansPerSecond:    10,
+        // Kembalikan object detail
+        returnDetailedScanResult: true,
+      }
+    );
+  }
+
+  qrScanner.start()
+    .then(function(){
       bisaScan = true;
       document.getElementById('btn-on').disabled  = true;
       document.getElementById('btn-off').disabled = false;
       document.getElementById('btn-off').classList.add('on');
-      setSts('Arahkan kamera ke QR Code', '');
-      mulaiLoop();
-    };
-  })
-  .catch(function(e) {
-    setSts(
-      e.name === 'NotAllowedError'
-        ? 'Izin kamera ditolak — izinkan kamera di browser lalu refresh.'
-        : 'Kamera error: ' + e.message,
-      'er'
-    );
-  });
+      setSts('Arahkan kamera ke QR Code','');
+    })
+    .catch(function(e){
+      var msg =
+        (String(e).indexOf('NotAllowed')>-1 || String(e).indexOf('Permission')>-1)
+          ? 'Izin kamera ditolak — tap ikon kunci di address bar, izinkan kamera, lalu refresh.'
+        : (String(e).indexOf('NotFound')>-1)
+          ? 'Kamera tidak ditemukan di perangkat ini.'
+        : 'Error kamera: '+e;
+      setSts(msg,'er');
+    });
 }
 
-function matikan() {
-  if (stream) { stream.getTracks().forEach(function(t){t.stop();}); stream = null; }
-  if (loopId) { clearInterval(loopId); loopId = null; }
-  document.getElementById('cam-video').srcObject = null;
+function matikan(){
+  if(qrScanner){
+    qrScanner.stop();
+    // Destroy agar bisa dibuat ulang dengan setting bersih
+    qrScanner.destroy();
+    qrScanner = null;
+  }
   document.getElementById('btn-on').disabled  = false;
   document.getElementById('btn-off').disabled = true;
   document.getElementById('btn-off').classList.remove('on');
-  setSts('Kamera dimatikan', '');
+  setSts('Kamera dimatikan','');
 }
 
-function mulaiLoop() {
-  var video  = document.getElementById('cam-video');
-  var canvas = document.getElementById('cam-canvas');
-  var ctx    = canvas.getContext('2d', { willReadFrequently: true });
-
-  loopId = setInterval(function() {
-    if (!bisaScan || !stream) return;
-    if (video.readyState < video.HAVE_ENOUGH_DATA) return;
-    if (video.videoWidth === 0) return;
-
-    canvas.width  = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
-
-    var img  = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var code = jsQR(img.data, img.width, img.height,
-                    { inversionAttempts: 'attemptBoth' });
-    if (code && code.data && code.data.trim()) {
-      bisaScan = false;
-      setSts('QR terdeteksi — memeriksa...', 'ok');
-      prosesId(code.data.trim());
-    }
-  }, 300);
-}
-
-// ── Manual ──────────────────────────────────────
-function cekManual() {
-  var id = document.getElementById('manual-id').value.trim();
-  if (!id) return;
-  document.getElementById('btn-cek').disabled = true;
+// ── Manual ────────────────────────────────────
+function cekManual(){
+  var id=document.getElementById('manual-id').value.trim();
+  if(!id)return;
+  document.getElementById('btn-cek').disabled=true;
+  bisaScan=false;
   prosesId(id);
 }
 
-// ── Proses ID ────────────────────────────────────
-function prosesId(id) {
-  document.getElementById('hasil').innerHTML =
-    '<div class="loading">Memeriksa ' + id + '...</div>';
-
-  callGAS('serverScanQR', [PASS, id],
-    function(res) { lastScanRes = res; tampilHasil(res); },
-    function(e)   { tampilHasil({ ok: false, msg: 'Error: ' + e }); }
+// ── Proses ID ─────────────────────────────────
+function prosesId(id){
+  document.getElementById('hasil').innerHTML=
+    '<div class="loading">Memeriksa '+id+'...</div>';
+  callGAS('serverScanQR',[PASS,id],
+    function(res){ lastScanRes=res; tampilHasil(res); },
+    function(e)  { tampilHasil({ok:false,msg:'Error: '+e}); }
   );
 }
 
-// ── Tampil hasil scan ────────────────────────────
-function tampilHasil(res) {
-  var html = '';
-
-  if (res.ok) {
-    var p = res.peserta;
-    html =
+// ── Tampil hasil ──────────────────────────────
+function tampilHasil(res){
+  var html='';
+  if(res.ok){
+    var p=res.peserta;
+    html=
       '<div class="rcard ok">'
-      + '<div class="r-icon">✅</div>'
-      + '<div class="r-nama ok">' + p.nama + '</div>'
-      + '<div class="r-sub">Angkatan ' + p.tahunLulus
-        + ' &nbsp;·&nbsp; ' + p.idPeserta + '</div>'
-      + '<div class="r-info">'
-      + '<b>Status:</b> HADIR ✓<br>'
-      + '<b>Email:</b> ' + p.email + '<br>'
-      + '<b>Merch:</b> ' + (p.beliMerch === 'YA' ? 'Ya' : 'Tidak')
-      + '</div>'
-      + buatMerchBox(res.order)
-      + buatNomorBox(res.nomorUrut, true)
-      + '<button class="btn-print-thermal"'
-        + ' onclick="cetakThermal()">🖨 Cetak Tiket Registrasi</button>'
-      + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
-      + '</div>';
-    setSts('✓ No. ' + res.nomorUrut + ' — hadir tercatat', 'ok');
+      +'<div class="r-icon">✅</div>'
+      +'<div class="r-nama ok">'+p.nama+'</div>'
+      +'<div class="r-sub">Angkatan '+p.tahunLulus+' &nbsp;·&nbsp; '+p.idPeserta+'</div>'
+      +'<div class="r-info">'
+      +'<b>Status:</b> HADIR ✓<br>'
+      +'<b>Email:</b> '+p.email+'<br>'
+      +'<b>Merch:</b> '+(p.beliMerch==='YA'?'Ya':'Tidak')
+      +'</div>'
+      +buatMerchBox(res.order)
+      +buatNomorBox(res.nomorUrut,true)
+      +'<button class="btn-print-thermal" onclick="cetakThermal()">🖨 Cetak Tiket Registrasi</button>'
+      +'<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
+      +'</div>';
+    setSts('✓ No. '+res.nomorUrut+' — hadir tercatat','ok');
 
-  } else if (res.msg === 'Tiket sudah digunakan!') {
-    var p = res.peserta || {};
-    html =
+  } else if(res.msg==='Tiket sudah digunakan!'){
+    var p=res.peserta||{};
+    html=
       '<div class="rcard warn">'
-      + '<div class="r-icon">⚠️</div>'
-      + '<div class="r-nama warn">Tiket Sudah Digunakan</div>'
-      + '<div class="r-sub">'
-        + (p.nama || '') + ' — ' + (p.idPeserta || '')
-      + '</div>'
-      + '<div class="r-info">'
-      + 'Tiket ini sudah di-scan sebelumnya.<br>'
-      + '<b style="color:#fb923c">Tidak bisa digunakan lagi.</b>'
-      + '</div>'
-      + buatMerchBox(res.order)
-      + (res.nomorUrut
-          ? buatNomorBox(res.nomorUrut, false)
-          + '<button class="btn-print-thermal"'
-            + ' onclick="cetakThermal()">🖨 Cetak Ulang Tiket</button>'
-          : '')
-      + '<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
-      + '</div>';
-    setSts('⚠ Tiket sudah digunakan', '');
+      +'<div class="r-icon">⚠️</div>'
+      +'<div class="r-nama warn">Tiket Sudah Digunakan</div>'
+      +'<div class="r-sub">'+(p.nama||'')+' — '+(p.idPeserta||'')+'</div>'
+      +'<div class="r-info">Tiket ini sudah di-scan sebelumnya.<br>'
+      +'<b style="color:#fb923c">Tidak bisa digunakan lagi.</b></div>'
+      +buatMerchBox(res.order)
+      +(res.nomorUrut
+        ? buatNomorBox(res.nomorUrut,false)
+          +'<button class="btn-print-thermal" onclick="cetakThermal()">🖨 Cetak Ulang Tiket</button>'
+        : '')
+      +'<button class="btn-next" onclick="resetScan()">Scan Berikutnya ›</button>'
+      +'</div>';
+    setSts('⚠ Tiket sudah digunakan','');
 
   } else {
-    html =
+    html=
       '<div class="rcard fail">'
-      + '<div class="r-icon">❌</div>'
-      + '<div class="r-nama fail">Tidak Valid</div>'
-      + '<div class="r-sub">' + (res.msg || 'ID tidak ditemukan') + '</div>'
-      + '<button class="btn-next" onclick="resetScan()">Coba Lagi ›</button>'
-      + '</div>';
-    setSts('✗ Tidak valid', 'er');
+      +'<div class="r-icon">❌</div>'
+      +'<div class="r-nama fail">Tidak Valid</div>'
+      +'<div class="r-sub">'+(res.msg||'ID tidak ditemukan')+'</div>'
+      +'<button class="btn-next" onclick="resetScan()">Coba Lagi ›</button>'
+      +'</div>';
+    setSts('✗ Tidak valid','er');
   }
-
-  document.getElementById('hasil').innerHTML = html;
+  document.getElementById('hasil').innerHTML=html;
 }
 
-function buatMerchBox(order) {
-  if (!order) return '';
-  var isLunas = order.statusBayar === 'LUNAS';
-  var cls     = isLunas ? 'lunas' : 'belum';
-  var stsTxt  = isLunas ? '✓ LUNAS' : '⚠ BELUM LUNAS';
-  var note    = isLunas ? ''
-    : '<div class="m-note">Ingatkan peserta menyelesaikan pembayaran.</div>';
-  return '<div class="merch-box">'
-    + '<div class="m-title">Merchandise dipesan</div>'
-    + '<div class="m-paket">' + (order.paketNama || order.paketId) + '</div>'
-    + '<div class="m-harga">Rp '
-      + Number(order.harga).toLocaleString('id') + '</div>'
-    + '<div class="m-sts ' + cls + '">'
-    + '<div class="m-dot ' + cls + '"></div>'
-    + stsTxt + '</div>'
-    + note + '</div>';
+function buatMerchBox(order){
+  if(!order)return'';
+  var isLunas=order.statusBayar==='LUNAS';
+  var cls=isLunas?'lunas':'belum';
+  var stsTxt=isLunas?'✓ LUNAS':'⚠ BELUM LUNAS';
+  var note=isLunas?'':'<div class="m-note">Ingatkan peserta menyelesaikan pembayaran.</div>';
+  return'<div class="merch-box">'
+    +'<div class="m-title">Merchandise dipesan</div>'
+    +'<div class="m-paket">'+(order.paketNama||order.paketId)+'</div>'
+    +'<div class="m-harga">Rp '+Number(order.harga).toLocaleString('id')+'</div>'
+    +'<div class="m-sts '+cls+'"><div class="m-dot '+cls+'"></div>'+stsTxt+'</div>'
+    +note+'</div>';
 }
 
-function buatNomorBox(nomor, isNew) {
-  return '<div class="nomor-box">'
-    + '<div class="nomor-label">'
-      + (isNew ? 'Nomor Doorprize Kamu' : 'Nomor Doorprize')
-    + '</div>'
-    + '<div class="nomor-besar">' + nomor + '</div>'
-    + '<div class="nomor-sub">'
-      + (isNew ? 'Simpan nomor ini untuk undian!' : 'Nomor terdaftar')
-    + '</div>'
-    + '</div>';
+function buatNomorBox(nomor,isNew){
+  return'<div class="nomor-box">'
+    +'<div class="nomor-label">'+(isNew?'Nomor Doorprize Kamu':'Nomor Doorprize')+'</div>'
+    +'<div class="nomor-besar">'+nomor+'</div>'
+    +'<div class="nomor-sub">'+(isNew?'Simpan nomor ini untuk undian!':'Nomor terdaftar')+'</div>'
+    +'</div>';
 }
 
-// ── Thermal print ────────────────────────────────
-function cetakThermal() {
-  if (!lastScanRes) return;
-  var p   = lastScanRes.peserta || {};
-  var res = lastScanRes;
-
-  var namaAcara = res.namaAcara || 'REAKSI 2';
-  var tglAcara  = res.tglAcara  || 'Agustus 2026';
-  var lokasi    = res.lokasi    || '';
-  var nomor     = res.nomorUrut || p.nomorUrut || '—';
-  var waktu     = new Date().toLocaleString('id-ID', {
-    day:'2-digit', month:'2-digit', year:'numeric',
-    hour:'2-digit', minute:'2-digit'
+// ── Thermal ───────────────────────────────────
+function cetakThermal(){
+  if(!lastScanRes)return;
+  var p  =lastScanRes.peserta||{};
+  var res=lastScanRes;
+  var namaAcara=res.namaAcara||'REAKSI 2';
+  var tglAcara =res.tglAcara ||'Agustus 2026';
+  var lokasi   =res.lokasi   ||'';
+  var nomor    =res.nomorUrut||p.nomorUrut||'—';
+  var waktu    =new Date().toLocaleString('id-ID',{
+    day:'2-digit',month:'2-digit',year:'numeric',
+    hour:'2-digit',minute:'2-digit'
   });
-
-  // Buat teks barcode sederhana dari nomor urut
-  var merchInfo = '';
-  if (lastScanRes.order) {
-    var o = lastScanRes.order;
-    merchInfo =
+  var merchInfo='';
+  if(lastScanRes.order){
+    var o=lastScanRes.order;
+    merchInfo=
       '<div class="th-line"></div>'
-      + '<div>Merch: ' + (o.paketNama || o.paketId) + '</div>'
-      + '<div>Status: ' + (o.statusBayar === 'LUNAS' ? 'LUNAS ✓' : 'BELUM LUNAS') + '</div>';
+      +'<div>Merch : '+(o.paketNama||o.paketId)+'</div>'
+      +'<div>Status: '+(o.statusBayar==='LUNAS'?'LUNAS ✓':'BELUM LUNAS')+'</div>';
   }
-
-  var content =
-    '<div class="th-center">'
-    + '<div class="th-bold" style="font-size:11pt">' + namaAcara + '</div>'
-    + '<div class="th-small">Bukti Registrasi Kehadiran</div>'
-    + '</div>'
-    + '<div class="th-line"></div>'
-    + '<div><b>' + p.nama + '</b></div>'
-    + '<div>Angkatan ' + (p.tahunLulus || '—') + '</div>'
-    + '<div class="th-small">' + (p.idPeserta || '') + '</div>'
-    + '<div class="th-line"></div>'
-    + '<div class="th-center">'
-    + '<div class="th-small">NOMOR DOORPRIZE</div>'
-    + '<div class="th-big">' + nomor + '</div>'
-    + '</div>'
-    + '<div class="th-line"></div>'
-    + '<div class="th-small">Tgl: ' + tglAcara + '</div>'
-    + (lokasi ? '<div class="th-small">Lokasi: ' + lokasi + '</div>' : '')
-    + mechInfo // sengaja typo jadi merchantInfo di bawah
-    + '<div class="th-line"></div>'
-    + '<div class="th-center th-small">Scan: ' + waktu + '</div>'
-    + '<div class="th-center th-small">Simpan tiket ini!</div>'
-    + '<div style="margin-top:8px"></div>';
-
-  // Fix typo
-  content = content.replace('mechInfo', merchInfo);
-
-  document.getElementById('thermal-content').innerHTML = content;
+  document.getElementById('thermal-content').innerHTML=
+    '<div class="th-center th-bold" style="font-size:11pt">'+namaAcara+'</div>'
+    +'<div class="th-center th-small">Bukti Registrasi Kehadiran</div>'
+    +'<div class="th-line"></div>'
+    +'<div class="th-bold">'+p.nama+'</div>'
+    +'<div>Angkatan '+(p.tahunLulus||'—')+'</div>'
+    +'<div class="th-small">'+(p.idPeserta||'')+'</div>'
+    +'<div class="th-line"></div>'
+    +'<div class="th-center th-small">NOMOR DOORPRIZE</div>'
+    +'<div class="th-center th-big">'+nomor+'</div>'
+    +'<div class="th-line"></div>'
+    +'<div class="th-small">Tanggal : '+tglAcara+'</div>'
+    +(lokasi?'<div class="th-small">Lokasi  : '+lokasi+'</div>':'')
+    +merchInfo
+    +'<div class="th-line"></div>'
+    +'<div class="th-center th-small">Scan: '+waktu+'</div>'
+    +'<div class="th-center th-small">Simpan tiket ini!</div>'
+    +'<div style="height:8mm"></div>';
   document.getElementById('thermal-modal').classList.add('show');
-
-  setTimeout(function() { window.print(); }, 400);
+  setTimeout(function(){window.print();},400);
 }
 
-function tutupThermal() {
+function tutupThermal(){
   document.getElementById('thermal-modal').classList.remove('show');
 }
 
-// ── Doorprize ────────────────────────────────────
-function muatDoorprize() {
-  document.getElementById('dp-list').innerHTML =
+// ── Doorprize ─────────────────────────────────
+function muatDoorprize(){
+  document.getElementById('dp-list').innerHTML=
     '<div class="loading">Memuat data...</div>';
-
-  callGAS('serverGetHadir', [PASS],
-    function(res) {
-      if (res.ok) {
-        dpData = res.data || [];
-        document.getElementById('dp-total').textContent = dpData.length;
+  callGAS('serverGetHadir',[PASS],
+    function(res){
+      if(res.ok){
+        dpData=res.data||[];
+        document.getElementById('dp-total').textContent=dpData.length;
         renderDpList();
       } else {
-        document.getElementById('dp-list').innerHTML =
-          '<div style="color:#f87171;font-size:13px;text-align:center;padding:20px">'
-          + (res.msg || 'Gagal memuat data') + '</div>';
+        document.getElementById('dp-list').innerHTML=
+          '<div style="color:#f87171;text-align:center;padding:20px;font-size:13px">'
+          +(res.msg||'Gagal memuat')+'</div>';
       }
     },
-    function(e) {
-      document.getElementById('dp-list').innerHTML =
-        '<div style="color:#f87171;font-size:13px;text-align:center;padding:20px">'
-        + 'Error: ' + e + '</div>';
+    function(e){
+      document.getElementById('dp-list').innerHTML=
+        '<div style="color:#f87171;text-align:center;padding:20px;font-size:13px">'
+        +'Error: '+e+'</div>';
     }
   );
 }
 
-function renderDpList() {
-  if (!dpData.length) {
-    document.getElementById('dp-list').innerHTML =
+function renderDpList(){
+  if(!dpData.length){
+    document.getElementById('dp-list').innerHTML=
       '<div style="text-align:center;color:#8899bb;padding:32px;font-size:14px">'
-      + 'Belum ada peserta hadir.</div>';
+      +'Belum ada peserta hadir.</div>';
     return;
   }
-  var html = '';
-  dpData.forEach(function(d) {
-    html +=
-      '<div class="hadir-item">'
-      + '<div class="hadir-no">' + (d.nomorUrut || '—') + '</div>'
-      + '<div class="hadir-info">'
-      + '<div class="hadir-nama">' + d.nama + '</div>'
-      + '<div class="hadir-sub">Angkatan ' + d.tahun + '</div>'
-      + '</div>'
-      + '<div class="hadir-time">' + (d.tsHadir || '') + '</div>'
-      + '</div>';
+  var html='';
+  dpData.forEach(function(d){
+    html+='<div class="hadir-item">'
+      +'<div class="hadir-no">'+(d.nomorUrut||'—')+'</div>'
+      +'<div class="hadir-info">'
+      +'<div class="hadir-nama">'+d.nama+'</div>'
+      +'<div class="hadir-sub">Angkatan '+d.tahun+'</div>'
+      +'</div>'
+      +'<div class="hadir-time">'+(d.tsHadir||'')+'</div>'
+      +'</div>';
   });
-  document.getElementById('dp-list').innerHTML = html;
+  document.getElementById('dp-list').innerHTML=html;
 }
 
-// ── Undi doorprize ───────────────────────────────
-var undiInterval = null;
-
-function bukaUndi() {
-  if (!dpData.length) {
-    alert('Belum ada peserta hadir.'); return;
-  }
+function bukaUndi(){
+  if(!dpData.length){alert('Belum ada peserta hadir.');return;}
   document.getElementById('modal-undi').classList.add('show');
   mulaiAnimasiUndi();
 }
-
-function mulaiAnimasiUndi() {
-  if (undiInterval) clearInterval(undiInterval);
-  // Animasi angka acak selama 3 detik
-  var count = 0;
-  undiInterval = setInterval(function() {
-    var idx  = Math.floor(Math.random() * dpData.length);
-    var item = dpData[idx];
-    document.getElementById('undi-num').textContent  = item.nomorUrut || '—';
-    document.getElementById('undi-nama').textContent = item.nama;
-    document.getElementById('undi-sub').textContent  = 'Angkatan ' + item.tahun;
-    count++;
-    if (count >= 20) { // ~3 detik
+function mulaiAnimasiUndi(){
+  if(undiInterval)clearInterval(undiInterval);
+  var count=0;
+  undiInterval=setInterval(function(){
+    var idx=Math.floor(Math.random()*dpData.length);
+    var item=dpData[idx];
+    document.getElementById('undi-num').textContent =item.nomorUrut||'—';
+    document.getElementById('undi-nama').textContent=item.nama;
+    document.getElementById('undi-sub').textContent ='Angkatan '+item.tahun;
+    if(++count>=20){
       clearInterval(undiInterval);
-      undiInterval = null;
-      // Berhenti di pemenang final
-      document.getElementById('undi-num').style.animation = 'none';
+      undiInterval=null;
+      document.getElementById('undi-num').style.animation='none';
     }
-  }, 150);
+  },150);
 }
-
-function undiLagi() {
-  document.getElementById('undi-num').style.animation = 'pulse 1s ease infinite';
+function undiLagi(){
+  document.getElementById('undi-num').style.animation='pulse 1s ease infinite';
   mulaiAnimasiUndi();
 }
-
-function tutupUndi() {
-  if (undiInterval) clearInterval(undiInterval);
+function tutupUndi(){
+  if(undiInterval)clearInterval(undiInterval);
   document.getElementById('modal-undi').classList.remove('show');
 }
 
-// ── Scan helpers ─────────────────────────────────
-function resetScan() {
-  document.getElementById('hasil').innerHTML = '';
-  document.getElementById('manual-id').value = '';
-  document.getElementById('btn-cek').disabled = false;
-  lastScanRes = null;
-  bisaScan    = true;
-  setSts('Arahkan kamera ke QR Code', '');
+// ── Reset scan ────────────────────────────────
+function resetScan(){
+  document.getElementById('hasil').innerHTML='';
+  document.getElementById('manual-id').value='';
+  document.getElementById('btn-cek').disabled=false;
+  lastScanRes=null;
+  bisaScan=true;
+  setSts('Arahkan kamera ke QR Code','');
+  // Resume scanner kalau masih aktif
+  if(qrScanner){
+    try{ qrScanner.start(); }catch(e){}
+  }
 }
 
-function setSts(txt, cls) {
-  var el = document.getElementById('sts');
-  el.textContent = txt;
-  el.className   = 'sts' + (cls ? ' ' + cls : '');
+// ── Helpers ───────────────────────────────────
+function setSts(txt,cls){
+  var el=document.getElementById('sts');
+  el.textContent=txt;
+  el.className='sts'+(cls?' '+cls:'');
+}
+function showErr(el,msg){
+  el.textContent=msg;
+  el.style.display='block';
 }
 
-function showErr(el, msg) {
-  el.textContent   = msg;
-  el.style.display = 'block';
-}
-
-// ── callGAS via JSONP ─────────────────────────────
-function callGAS(fn, params, onSuccess, onError) {
-  var cbName = 'gcb_' + (++jsonpN) + '_' + Date.now();
-  var script = document.createElement('script');
-  var done   = false;
-
-  var timer = setTimeout(function() {
-    if (done) return;
-    done = true; cleanup();
+// ── callGAS via JSONP ─────────────────────────
+function callGAS(fn,params,onSuccess,onError){
+  var cbName='gcb_'+(++jsonpN)+'_'+Date.now();
+  var script=document.createElement('script');
+  var done=false;
+  var timer=setTimeout(function(){
+    if(done)return;
+    done=true;cleanup();
     onError('Timeout 15 detik.');
-  }, 15000);
-
-  window[cbName] = function(data) {
-    if (done) return;
-    done = true; cleanup();
+  },15000);
+  window[cbName]=function(data){
+    if(done)return;
+    done=true;cleanup();
     onSuccess(data);
   };
-
-  function cleanup() {
+  function cleanup(){
     clearTimeout(timer);
     delete window[cbName];
-    if (script.parentNode) script.parentNode.removeChild(script);
+    if(script.parentNode)script.parentNode.removeChild(script);
   }
-
-  script.onerror = function() {
-    if (done) return;
-    done = true; cleanup();
-    onError('Script error.');
+  script.onerror=function(){
+    if(done)return;
+    done=true;cleanup();
+    onError('Script error — periksa URL GAS.');
   };
-
-  script.src = GAS_URL
-    + '?call='     + encodeURIComponent(fn)
-    + '&params='   + encodeURIComponent(JSON.stringify(params))
-    + '&callback=' + encodeURIComponent(cbName);
-
+  script.src=GAS_URL
+    +'?call='+encodeURIComponent(fn)
+    +'&params='+encodeURIComponent(JSON.stringify(params))
+    +'&callback='+encodeURIComponent(cbName);
   document.head.appendChild(script);
 }
 </script>
